@@ -1,9 +1,9 @@
 package ex04;
 
-// 양방향 연관관계
+// 양방향 연관관계 : 1대1
 public class Professor {
 
-    private Student student;
+    private Student student; // 학생
 
     public void setStudent(Student student) {
         this.student = student;

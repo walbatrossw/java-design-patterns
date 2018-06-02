@@ -1,6 +1,6 @@
 package ex01;
 
-
+// UML을 클래스로 작성하기
 public class Course {
 
     private String id;

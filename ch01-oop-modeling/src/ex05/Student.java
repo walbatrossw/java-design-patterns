@@ -2,11 +2,11 @@ package ex05;
 
 import java.util.Vector;
 
-// 단반향 관계 : 1대n
+// 단반향 관계 : 1대N
 public class Student {
 
     private String name;            // 학생이름
-    private Vector<Course> courses; // 수강과목들
+    private Vector<Course> courses; // 수강과목들 : 컬렉션 자료구조를 통해 여러개의 Course 클래스 객체를 참조할 수 있음
 
     //  생성자
     public Student(String name) {
