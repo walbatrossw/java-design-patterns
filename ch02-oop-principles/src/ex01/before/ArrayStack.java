@@ -8,20 +8,24 @@ public class ArrayStack {
     public int[] itemArray;
     public int stackSize;
 
+    // 생성자
     public ArrayStack(int stackSize) {
         this.itemArray = new int[stackSize];
         this.top = -1;
         this.stackSize = stackSize;
     }
 
+    // 스택 공백 여부 확인
     public boolean isEmpty() {
         return (top == -1);
     }
 
+    // 스택이 가득차있는지 확이
     public boolean isFull() {
         return (top == this.stackSize - 1);
     }
 
+    // 스택에 item 추가
     public void push(int item) {
         if (isFull()) {
             System.out.println("Inserting fail! ArrayStack is full.");
@@ -31,6 +35,7 @@ public class ArrayStack {
         }
     }
 
+    // 스택에 item 제거
     public int pop() {
         if (isEmpty()) {
             System.out.println("Deleting fail! ArrayStack is empty.");
@@ -40,6 +45,7 @@ public class ArrayStack {
         }
     }
 
+    // 스택 top의 item 반환
     public int peek() {
         if (isEmpty()) {
             System.out.println("Peeking fail! ArrayStack is empty.");
@@ -48,6 +54,5 @@ public class ArrayStack {
             return itemArray[top];
         }
     }
-
-
+    
 }

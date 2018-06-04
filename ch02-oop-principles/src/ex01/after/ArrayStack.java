@@ -2,11 +2,11 @@ package ex01.after;
 
 import java.util.ArrayList;
 
+// 캡슐화를 위한 ArrayStack 예제 수정
 public class ArrayStack {
 
     // private으로 변경 : 외부에서 접근할 수 없도록
-    // ArrayList 클래스 사용
-    private ArrayList<Integer> items;
+    private ArrayList<Integer> items; // ArrayList 클래스 사용
     private int stackSize;
 
     public ArrayStack(int stackSize) {

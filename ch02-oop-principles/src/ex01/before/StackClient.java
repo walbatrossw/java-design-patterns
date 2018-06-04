@@ -1,6 +1,7 @@
 package ex01.before;
 
 public class StackClient {
+
     public static void main(String[] args) {
 
         ArrayStack stack = new ArrayStack(10);
@@ -8,6 +9,7 @@ public class StackClient {
         stack.itemArray[++stack.top] = 20;
         System.out.println(stack.itemArray[stack.top]);
     }
+
 }
 
 // ArrayStack 클래스의 push나 pop메서드를 사용하지 않고도 직접 배열에 값을 저장할 수 있다.
