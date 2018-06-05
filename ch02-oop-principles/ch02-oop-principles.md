@@ -153,8 +153,113 @@ int computeTotalPrice(LinkedList<Fruit> fruit) {
 이러한 서브 클래스 캡슐화는 외부 클라이언트가 개별적인 클래스들과 무관하게 프로그래밍을 할 수 있게 해준다.
 
 
+아래는 사람이 자동차를 사용하는 상황을 묘사한 것이다.
+```
+사람 ----------> 자동차 <----------- BMW, 소나타, 벤츠, 아우디
+```
+
+사람 클래스 관점에서는 구체적인 자동차의 종류가 숨겨져있는데 대리운전을 한다고 가정해보자. 대리운전자는 자동차 종류에 따라 운전에 영향을 받지 않는다.
+이와 같이 새로운 자동차를 운전해야 하는 경우에도 사람 클래스는 영향을 받지 않게 된다.
+
+**일반화 관계는 자식 클래스를 외부로부터 은닉하는 캡슐화의 일종이다**
 
 #### 3.2 일반화 관계와 위임
+이전에도 말한 것처럼 많은 사람들이 일반화 관계(상속)를 기능의 상속, 즉 재사용을 위해 존재한다고 오해하고 있다. 하지만 이는 사실이 아니다.
+
+예를 들어 보자. 만약 `ArrayList`를 상속받아 `Stack`클래스를 만든다면 아마 프로그래머의 의도는 `ArrayList`클래스에 정의된 `isEmpty()`, `size()`, `add()`, `remove()` 메서드를 자신이 구현하지 않고 그대로 사용하길 원했을 것이다.
+기능의 재사용 측면에서는 성공적이라고 할 수 있게지만`ArrayList`클래스에 정의된 스택과 전혀관련 없는 수많은 연산이나 속성도 함께 상속 받게 된다.
+실제로도 이런 불필요한 속성이나 연산은 도움이 되기보다는 물려받고 싶지 않은 빚이 될 가능성이 많다.
+
+실제로 위의 사례와 같이 코드를 작성해보면 아래와 같다.
+```java
+// 일반화(상속)을 통한 기능 재사용
+public class MyStack<String> extends ArrayList<String> {
+
+    public void push(String element) {
+        add(element);
+    }
+
+    public String pop() {
+        return remove(size() - 1);
+    }
+
+}
+``` 
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        MyStack<String> myStack = new MyStack<>();
+
+        myStack.push("A");
+        myStack.push("B");
+        myStack.push("C");
+        myStack.add("C");   // 허용되어서는 안됨
+        myStack.set(0, "D"); // 허용되어서는 안됨
+
+        System.out.println(myStack.pop());
+        System.out.println(myStack.pop());
+        System.out.println(myStack.pop());
+
+    }
+}
+```
+위와 같이 작성됨에 따라 `push()`, `pop()`메서드를 통하지 않고 스택의 자료구조에 직접 접근할 수 있게 되었다.
+하지만 이렇게 됨에 따라 스택의 무결성 조건인 LIFO에 위배된다.
+
+기본적으로 일반화 관계는 "IS A KIND OF 관계"가 성립이 되어야만 한다. 그런 면에서 `MyStack`클래스와 `ArrayList`클래스의 관계가 참인지 판단을 통해 알 수 있다.
+
+> Stack is a kind of ArrayList : 참이 아니다. 왜냐하면 대부분의 프로그램에서 배열목록 대신 스택을 사용할 수 없기 때문이다.
+
+그렇다면 어떤 클래스의 일부 기능만 재사용하고 싶은 경우 어떻게 하는 것이 좋을까?
+그것은 바로 *위임* 을 사용하는 것이다. 위임은 자신이 직접 기능을 실행하지 않고 다른 클래스의 객체가 기능을 실행하도록 하는 것이다.
+
+따라서 일반화 관계는 클래스 사이의 관계이지만 위임은 객체 사이의 관계이다.
+
+아래는 위임을 사용하여 일반화(상속)를 대신하는 과정이다.
+
+1. 자식 클래스에 부모 클래스의 인스턴스를 참조하는 속성을 만든다. 이 속성 필드를 `this`로 초기화한다.
+2. 서브 클래스에 정의된 각 메서드에 1번에서 만든 위임 속성 필드를 참조하도록 변경한다.
+3. 서브 클래스에서 일반환 관계 선언을 제거하고, 위임 속성 필드에 슈퍼 클래스의 객체를 생성해 대입한다.
+4. 서브 클래스에서 사용된 슈퍼 클래스의 메서드에도 위임 메서드를 추가한다.
+5. 컴파일하고 잘 동작하는지 확인한다.
+
+실제로 `MyStack`클래스에 적용 시키보자.
+```java
+// 3. 서브 클래스에서 일반화된 관계선언을 제거
+public class MyStack<String> {
+//public class MyStack<String> extends ArrayList<String> {
+
+    // 1. 자식 클래스에 부모클래스의 인스턴스를 참조하는 속성 생성, this로 초기화
+    //private ArrayList<String> arrayList = this;
+
+    // 4. 위임 속성 필드에 슈퍼 클래스의 객체를 생성해 대입
+    private ArrayList<String> arrayList = new ArrayList<>();
+
+    // 2. 서브 클래스에 정의된 메서드에 1번에서 만든 위임 속성 필드를 참조하도록 변경
+    public void push(String element) {
+        //add(element);
+        arrayList.add(element);
+    }
+
+    // 2. 서브 클래스에 정의된 메서드에 1번에서 만든 위임 속성 필드를 참조하도록 변경
+    public String pop() {
+        //return remove(size() - 1);
+        return arrayList.remove(size() - 1);
+    }
+
+    // 5. 서브 클래스에서 사용된 슈퍼 클래스의 메서드에도 위임 메서드를 추가
+    public boolean isEmpty() {
+        return arrayList.isEmpty();
+    }
+
+    // 5. 서브 클래스에서 사용된 슈퍼 클래스의 메서드에도 위임 메서드를 추가
+    public int size() {
+        return arrayList.size();
+    }
+
+}
+```
 
 #### 3.3 집합론 관점에서 본 일반화 관계
 
