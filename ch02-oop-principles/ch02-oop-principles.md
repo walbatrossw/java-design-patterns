@@ -268,12 +268,29 @@ public class MyStack<String> {
 
 아래의 그림은 집합과 일반화의 관계를 보여준다.
 
-![집합론](https://raw.githubusercontent.com/walbatrossw/java-design-patterns/master/ch02-oop-principles/img/oop-design-grouping.png)
+![집합론](https://raw.githubusercontent.com/walbatrossw/java-design-patterns/master/ch02-oop-principles/img/group.png)
 
 부모클래스 A는 전체 집합 A에 해당하고 그 부분 집합 A1, A2, A3는 각각 A의 자식 클래스에 해당한다. 이 때 아래와 같은 관계가 성립되어야 한다.
 
 - A = A1 ∪ A2 ∪ A3
 - A1 ∩ A2 ∩ A3 = ∅
+
+아래와 같은 제약 조건도 존재한다.
+
+![일반화 관계에서의 제약조건](https://raw.githubusercontent.com/walbatrossw/java-design-patterns/master/ch02-oop-principles/img/contraint.png)
+
+위 제약 조건을 일반화 관계에 적용하려면 제약조건 `{disjoint, complete}`를 사용한다. 제약 `{disjoint}`는 자식 클래스 객체가 동시에 두 클래스에 속할 수 없다는 의미고, `{complete}`는 자식 클래스의 객체에 해당하는 부모 클래스의 객체와 부모 클래스의 객체에 해당하는 자식 클래스의 객체가 하나만 존재한다는 의미다.
+
+그리고 집합론 관점에서 일반화 관계를 만들면 연관관계를 단순하게 할 수 있다. 가령 어떤 쇼핑몰에서 구매액을 기준으로 회원을 VIP회원과 일반회원으로 분류했다고 가정해보자.
+VIP회원과 일반회원 각각을 자식 클래스로 생각하여 상품과 연관관계를 맺게 할 수 있지만 기본적으로 회원은 상품을 회원등급에 관계없이 구매가 가능하다.
+즉, 다시말하자면 상품클래스와 연관관계는 모든 자식클래스에서 공통적으로 갖는 연관관계이므로 아래와 같이 부모 클래스인 회원 클래스로 연관관계를 이동하는 것이 클래스 다이어그램을 간결하게 만들 수 있다.
+
+![집합론을 통한 연관관계의 일반화]()
+
+집합론적인 관점에서 일반화는 상호배타적인 부분 집합으로 나누는 과정으로 간주할 수 있다. 이를 통해 상호 배타적인 특성이 요구되는 상황에서 일반화 관계를 적용할 수 있다.
+예를 들어 학생은 "놀기"와 "공부하기" 중에서 어느 한 상태에만 있을 수 있다면 학생이 "공부하기" 상태라면 책만 볼 수 있고, "놀기"상태라면 장난감만 다룰 수 있다. 이런 경우에는 전형적으로 상호 배타적인 두 상태를 모델링 해야하며 이때 일반화 관계가 유용하게 사용된다.
+
+![일반화 관계를 이용한 상호 배타적 관계 모델링]()
 
 
 
