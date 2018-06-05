@@ -268,7 +268,7 @@ public class MyStack<String> {
 
 아래의 그림은 집합과 일반화의 관계를 보여준다.
 
-![]()
+![집합론](https://raw.githubusercontent.com/walbatrossw/java-design-patterns/master/ch02-oop-principles/img/oop-design-grouping.png)
 
 부모클래스 A는 전체 집합 A에 해당하고 그 부분 집합 A1, A2, A3는 각각 A의 자식 클래스에 해당한다. 이 때 아래와 같은 관계가 성립되어야 한다.
 
