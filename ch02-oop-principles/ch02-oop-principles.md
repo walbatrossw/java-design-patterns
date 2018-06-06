@@ -495,4 +495,87 @@ public class Parrot extends Pet {
 
 ![연관 관계를 이용한 역할 수행 표현](https://raw.githubusercontent.com/walbatrossw/java-design-patterns/master/ch02-oop-principles/img/peter-coad-class-diagram2.png)
 
- ![관계를 이용한 역할 수행]()
+아래의 클래스 다이어그램들의 차이점에 대해 알아보자.
+
+![상속으로 표현한 역할 수행관계](https://raw.githubusercontent.com/walbatrossw/java-design-patterns/master/ch02-oop-principles/img/peter-coad-class-diagram.png)
+![관계를 이용한 역할 수행](https://raw.githubusercontent.com/walbatrossw/java-design-patterns/master/ch02-oop-principles/img/class-diagram.png)
+ 
+첫번째 클래스 다이어그램은 사람의 역할이 운전자와 회사원으로 고정되어 있다. 따라서 사람에게 새로운 역할이 부가되면 클래스 코드도 변경되어야 한다.
+그러나 두번째 클래스 다이어그램은 역할이라는 추상클래스를 상속받는 구조로 구체적인 역할 클래스들을 캡슐화하기 때문에 새로운 역할이 추가되더라도 기존의 코드는 영향을 받지 않는다.
+만약 축구선수라는 역할이 추가되더라도 사람 클래스 코드는 변경되지 않는다. 이것을 **개방-폐쇠의 원칙(Open-Closed Principle)** 이라 한다.
+
+그렇다면 위의 클래스 다이어그램을 코드로 작성해보자.
+
+```java
+// 사람 클래스
+public class Person {
+
+    private Role role;  // 역할 속성
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void doIt() {
+        role.doIt();
+    }
+}
+
+// 역할 클래스
+public abstract class Role {
+
+    // 수행 추상 메서드
+    public abstract void doIt();
+
+}
+
+// 운전자 클래스
+public class Driver extends Role {
+
+    @Override
+    public void doIt() {
+        System.out.println("Driving");  // 오버라이딩
+    }
+}
+
+// 직장인 클래스
+public class Worker extends Role {
+
+    @Override
+    public void doIt() {
+        System.out.println("Working");  // 오버라이딩
+    }
+}
+
+// 축구선수 클래스
+public class SoccerPlayer extends Role {
+
+    @Override
+    public void doIt() {
+        System.out.println("Soccer Player");
+    }
+}
+
+// 메인 클래스
+public class Main {
+    public static void main(String[] args) {
+
+        Person doubles = new Person();  // 사람 객체 생성
+
+        doubles.setRole(new Driver());  // 운전자로 역할 변경
+        doubles.doIt();
+
+        doubles.setRole(new Worker());  // 직장인으로 역할 변경
+        doubles.doIt();
+
+        doubles.setRole(new SoccerPlayer()); // 축구 선수로 역할 변경
+        doubles.doIt();
+    }
+}
+```
+
+ 
