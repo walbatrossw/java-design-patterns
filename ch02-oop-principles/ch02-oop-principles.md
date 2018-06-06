@@ -493,4 +493,6 @@ public class Parrot extends Pet {
 따라서 위의 클래스 다이어그램은 아래의 클래스 다이어그램처럼 상속을 사용하지 않고, 연관 관계를 사용해 클래스 사이의 관계를 표현하는 편이 좋다. 
 이렇게 설계하면 사람은 종업원 역할과 운전자 역할을 수행한다는 사실이 드러나고, 어느 순간에도 두 역할도 수행하지 않을 수 있다는 다중성도 표현할 수 있다.
 
-![연관 관계를 이용한 역할 수행 표현]() 
+![연관 관계를 이용한 역할 수행 표현](https://raw.githubusercontent.com/walbatrossw/java-design-patterns/master/ch02-oop-principles/img/peter-coad-class-diagram2.png)
+
+ ![관계를 이용한 역할 수행]()
