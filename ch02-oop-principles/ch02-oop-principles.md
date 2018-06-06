@@ -473,4 +473,4 @@ public class Parrot extends Pet {
 
 아래의 클래스 다이어그램을 통해 피터 코드의 규칙을 살펴보자
 
-![상속으로 표현한 역할 수행관계]()
+![상속으로 표현한 역할 수행관계](https://raw.githubusercontent.com/walbatrossw/java-design-patterns/master/ch02-oop-principles/img/peter-coad.png)
