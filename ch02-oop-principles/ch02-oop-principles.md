@@ -335,3 +335,130 @@ Member클래스의 자식 클래스로 아래와 같은 4개의 클래스를 만
 ## 4. 다형성
 
 #### 4.1 다형성이란?
+**객체지향에서 다형성은 "서로 다른 클래스의 객체가 같은 메시지를 받았을 때 각자의 방식으로 동작하는 능력"을 말한다.**
+
+#### 4.2 다형성 예제
+애완동물을 예를 들어서 설명해보자. 애완동물에는 고양이, 강아지, 앵무새 등 여러 종류의 동물이 있고, 이러한 동물들에게 talk라는 명령을 내리면 각각의 애완 동물들을 아래와 같이 대답할 것이다.
+
+- 고양이 : 야옹 야옹~
+- 강아지 : 멍멍!!
+- 앵무새 : 안녀엉~~
+
+위에서 처럼 각각의 애완동물이 모두 명령을 수행하지만 행동 방식이 모두 다르다. 이게 바로 다형성의 개념이다.
+다형성이 상속과 연계되어 동작하면 매우 강력한 힘을 발휘하게 된다.
+
+위의 내용을 코드로 구현하면 아래와 같다.
+```java
+// 추상 클래스
+public abstract class Pet {
+    // 추상 메서드
+    public abstract void talk();
+}
+
+// Pet 추상클래스를 상속 받은 Cat 클래스
+public class Cat extends Pet {
+    // 추상메서드를 재정의
+    public void talk() {
+        System.out.println("야옹~");
+    }
+}
+
+// Pet 추상클래스를 상속 받은 Dog 클래스
+public class Dog extends Pet {
+    // 추상메서드를 재정의
+    public void talk() {
+        System.out.println("멍멍!");
+    }
+}
+
+// Pet 추상클래스를 상속 받은 Parrot 클래스
+public class Parrot extends Pet {
+    // 추상메서드를 재정의
+    public void talk() {
+        System.out.println("안녀엉~~");
+    }
+}
+```
+
+그리고 `Parrot`클래스의 객체를 `Pet` 클래스 타입으로 지정한다.
+
+```java
+Pet p = new Parrot();
+```
+
+`p`에 바인딩된 객체에 `talk`메서드의 메시지를 전달하면 현재 `p`가 실제로 참조하는 객체에 따라 실행되는 `talk()`메서드의 동작이 달라지게 된다.
+위의 경우는 `p`가 `Parrot`클래스의 객체를 참조하기 때문에`Parrot`클래스에 정의된 `talk()`메서드가 실행된다. 이것을 다형성이라고 한다.
+
+그렇다면 다형성을 적용한 코드와 적용하지 않은 코드의 차이점을 알아보자.
+
+```java
+public class Cat {
+    public void meow() {
+        System.out.println("야옹~");
+    }
+}
+public class Dog {
+    public void bark() {
+        System.out.println("멍멍!");
+    }
+}
+public class Parrot {
+    public void sing() {
+        System.out.println("안녀엉~");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog d = new Dog();
+        Cat c = new Cat();
+        Parrot p = new Parrot();
+        d.bark();
+        c.meow();
+        p.sing();
+    }
+}
+```
+
+```java
+public abstract class Pet {
+    public abstract void talk();
+}
+
+public class Cat extends Pet {
+    @Override
+    public void talk() {
+        System.out.println("야옹~");
+    }
+}
+
+public class Dog extends Pet {
+    @Override
+    public void talk() {
+        System.out.println("멍멍!");
+    }
+}
+
+public class Parrot extends Pet {
+    @Override
+    public void talk() {
+        System.out.println("안녀엉~~");
+    }
+}
+```
+
+위의 다형성을 사용한 코드와 그렇지 않은 코드의 결과물은 같다. 
+하지만 다형성을 사용하지 않은 경우는 클래스별로 다르게 처리해주어야 하는 불편함이 있다.
+다형성을 사용하는 경우에는 구체적으로 현재 어떤 클래스 객체가 참조되는지와 무관하게 프로그래밍을 할 수가 있다.
+따라서 새로운 애완동물을 나타내는 클래스가 자식 클래스로 추가되더라도 코드는 영향을 받지 않게 된다. 
+
+이러한 것이 가능한 이유는 일반화 관계에 있을 때 부모 클래스의 참조 변수가 자식 클래스의 객체를 참조할 수 있기 때문이다.
+단, 부모 클래스의 참조변수가 접근할 수 있는 것은 부모 클래스가 물려준 변수와 메서드뿐이다.
+
+**다형성과 일반화 관계(상속)는 코드를 간결하게 할 뿐만아니라 변화에 유연하게 대처할 수 있게 해준다.**
+
+- 다형성 예제1 : 형변환 오류
+- 다형성 예제2 : 상속과 정적 메서드의 관계
+
+
+
