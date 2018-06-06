@@ -308,7 +308,29 @@ UML에서는 이러한 분류를 변별자(discriminator)라고 하며 일반화
 
 ![변별자와 다중 분류]()
 
-이를 처리하기위해
+이를 처리하기위한 방법으로 모든 분류 가능한 조합으로 대응하는 클래스를 만드는 방법이 있다.
+Member클래스의 자식 클래스로 아래와 같은 4개의 클래스를 만들수 있다.
+
+- VIP-Local : VIP Member ∩ Local
+- VIP-Non Local : VIP Member ∩ Non Local
+- Ordinary-Local : Ordinary Member ∩ Local
+- Ordinary-Non Local : Ordinary Member ∩ Non Local
+
+아래의 그림은 집합론 관점에서 클래스 관계를 최종적으로 수정한 것이다.
+
+![변별자와 다중분류 변경]()
+
+위의 그림을 토대로 최종적으로 다음과 같이 클래스를 6가지로 분류할 수 있다.
+
+- VIP-Local : VIP Member ∩ Local
+- VIP-Non Local : VIP Member ∩ Non Local
+- Ordinary-Local : Ordinary Member ∩ Local
+- Ordinary-Non Local : Ordinary Member ∩ Non Local
+- VIP Member : VIP Local ∪ VIP-Non Local
+- Ordinary Member : Ordinary-Local ∪ Ordinary-Non Local
+- Member : Ordinary Member ∪ VIP Member
+
+**일반화는 자식 클래스의 적절한 합집합과 교집합으로 이루어진다.**
 
 ## 4. 다형성
 
