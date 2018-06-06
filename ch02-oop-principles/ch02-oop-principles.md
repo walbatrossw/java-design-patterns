@@ -306,7 +306,7 @@ UML에서는 이러한 분류를 변별자(discriminator)라고 하며 일반화
 연관 관계를 위한 속성을 Ordinary Member 클래스에 두면 비지역민에게도 경품이 제공될 수도 있고, Local 클래스에 두면 VIP 회원에게도 경품이 제공되기 때문이다.
 이는 의도한 바와 잘못된 모델링이다.
 
-![변별자와 다중 분류]()
+![변별자와 다중 분류](https://raw.githubusercontent.com/walbatrossw/java-design-patterns/master/ch02-oop-principles/img/discriminator.png)
 
 이를 처리하기위한 방법으로 모든 분류 가능한 조합으로 대응하는 클래스를 만드는 방법이 있다.
 Member클래스의 자식 클래스로 아래와 같은 4개의 클래스를 만들수 있다.
@@ -318,7 +318,7 @@ Member클래스의 자식 클래스로 아래와 같은 4개의 클래스를 만
 
 아래의 그림은 집합론 관점에서 클래스 관계를 최종적으로 수정한 것이다.
 
-![변별자와 다중분류 변경]()
+![변별자와 다중분류 변경](https://raw.githubusercontent.com/walbatrossw/java-design-patterns/master/ch02-oop-principles/img/group-generalization.png)
 
 위의 그림을 토대로 최종적으로 다음과 같이 클래스를 6가지로 분류할 수 있다.
 
