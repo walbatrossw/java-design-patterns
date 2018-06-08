@@ -117,7 +117,7 @@ AOP는 횡단 관심을 수행하는 코드를 Aspect라는 특별한 객체로 
 **개방-폐쇠 원칙은 기존의 코드를 변경하지 않으면서 기능을 추가할 수 있도록 설계되어야 한다는 뜻이다.**
 이전에 살펴 본 학생 클래스에서 학생의 성적이나 출석기록을 출력하는 기능을 가지고 예를 들어보자.
 
-![성적표, 출석부 출력기능 사용](https://github.com/walbatrossw/java-design-patterns/blob/master/ch03-solid/img/ocp1.png?raw=true)
+![성적표, 출석부 출력기능 사용](https://github.com/walbatrossw/java-design-patterns/blob/master/ch03-solid/img/ocp-student-print.png?raw=true)
 
 위의 그림에서 처럼 성적표와 출석부를 출력하는 기능을 클라이언트 클래스가 사용하도록 할 수 있다.
 그러나 위의 방식은 OCP를 위반한다. 만약 새로운 기능인 도서 대여기록 출력을 추가하면 클라이언트 클래스를 다시 수정해야 하기 때문이다.
