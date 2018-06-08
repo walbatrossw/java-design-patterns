@@ -138,14 +138,148 @@ OCP를 보는 또 하나의 관점은 클래스를 변경하지 않고도 대상
 하지만 단위 테스트의 가장 중요한 점은 빠른 시간에 자주 테스트를 해야한다는 것인데 시간이 많이 소요되는 데이터베이스나 웹서버 설치는 테스트를 회피하게 되는 요인이 된다.
 따라서 테스트 대상 기능이 사용하는 실제 외부의 서비스를 흉내내는 가짜 객체를 만들어 테스트의 효율성을 높일 필요성이 있다.
 
+실제 서비스에서 사용할 객체를 그대로 테스트할 때 위험이 따르는 경우도 존재한다.
+예를 들면 어떤 기능이 데이터베이스를 사용할 때 테스트를 위해 데이터베이스에 삭제를 포함한 여러 작업을 실행한다고 가정해보자.
+이 경우 실제 데이터베이스에 변경이 생기게되는 위험이 발생한다. 따라서 테스트를 위해 실제 데이터베이스 기능을 데체하는 가짜 객체를 만들 필요가 있다.
 
-
-
-
-
-
+또한 테스트 대상 기능이 특정 상태에 의존해서 동작할 수 있다는 점도 고려해야한다.
+예를 들어 비행기 관제 기능 중 동시에 착륙하려는 비행기 수가 1,000대인 경우 테스트를 한다면 어떻게 해야할까?
+실제 1,000대의 비행기를 착륙시킬 수는 없기 때문에 1,000대의 비행기를 대신할 모의 객체를 이용하는 것이 좋다.
 
 ## 3. 리스코프 치환 원칙(Liskov Substitution Principle)
+LSP는 일반화 관계에 대한 내용이며 **자식 클래스는 최소한 자신의 부모 클래스에서 가능한 행위는 수행할 수 있어야 한다는 뜻이다.**
+LSP를 만족하면 **프로그램에서 부모 클래스의 인스턴스 대신 자식 클래스의 인스턴스로 대체해도 프로그램의 의미는 변화하지 않는다.**
+이를 위해서는 **부모 클래스와 자식 클래스 사이는 행위가 일관되어야 한다.**
+
+위에서 설명한 LSP를 이해하기 위해서는 일반화 관계를 다시 알아볼 필요가 있다.
+일반화 관계는 "A is a kind of B"라는 관계가 반드시 성립되어야만 하는데 예를 들어 포유류와 원숭이 관계를 생각해보자.
+원숭이는 포유류다. 그렇기 때문에 "원숭이 is a kind of 포유류"라는 관계가 성립될 수 있다. 따라서 부모 클래스는 포유류, 자식 클래스는 원숭이로 설정할 수가 있다.
+
+```
+포유류 <------------- 원숭이
+```
+
+객체지향 관점에서 일반화 관계는 부모 클래스의 인스턴스 대신 자식 클래스의 인스턴스를 별다른 변경 없이 사용할 수 있을 때 성립한다.
+
+그렇다면 다시 포유류에 대해 생각해보자.
+- 포유류는 알을 낳지 않고 새끼를 낳는다.
+- 포유류는 젖을 먹이고, 폐를 통해 호흡한다.
+- 포유류는 체온이 일정한 정온 동물이고, 털이나 두꺼운 피부로 덮여있다.
+
+위의 설명에 포유류라는 단어 대신 원숭이로 대체해보면 문제가 없다. 따라서 원숭이와 포유류는 행위에 일관성이 있다고 볼 수 있다.
+하지만 오리너구리를 대입해보면 말이 되지 않는다. 왜냐면 오리너구리는 알을 낳아 번식하기 때문이다. 하지만 나머지는 해당한다.
+
+객체 지향 관점에서는 "A is a kind of B"를 만족해야하는데 오리 너구리의 경우에는 만족하지 못하는 설명이 되었다.
+LSP를 만족하기 위해서는 보무 클래스의 인스턴스를 자식 클래스의 인스턴스로 대신할 수 있어야 한다.
+
+자식 클래스가 부모 클래스 인스턴스의 행위를 일관성있게 실행하려면 어떻게 해야할까?
+
+이를 위해서는 부모 클래스의 행위를 더 명확하게 정의할 수 있는 수단이 필요하다. 
+어떤 클래스의 행위를 일종의 방정식 형태로 기술해 자식 클래스의 인스턴스가 이 방정식을 만족하는지 점검해본다. 
+만약 만족한다면 자식 클래스가 부모 클래스의 행위를 일관성있게 실행한다고 말할 수 있다. 
+
+이제 코드를 통해 LSP에 대해 좀더 알아보자.
+
+```java
+public class Bag {
+    private int price;
+    
+    public void setPrice(int price) {
+        this.price = price;
+    }
+    
+    public int getPrice() {
+        return price;
+    }
+}
+```
+
+`Bag`클래스는 가격을 설정하고, 가격을 조회하는 기능을 가지고 있다. 따라서 `Bag`클래스의 행위는 다음과 같이 표현할 수 있다.
+
+> 가격은 설정된 가격 그대로 조회된다.
+
+이를 좀더 형식적으로 작성하면 다음과 같다.
+
+```java
+// 모든 Bag 객체 b와 모든 정수 값 p에 대해
+[b.setPrice(p)].getPrice() == p;
+```
+여기서 `[객체.메서드(인자 리스트)]`는 메서드가 실행된 후의 `b`객체를 나타낸다.
+이런 경우 `Bag`클래스의 행위를 손상하지 않고 일관성 있게 실행하는 클래스를 만드려면 어떻게 해야할까? 
+
+가장 직접적이고 직관적인 방법은 슈퍼클래스에서 상속받은 메서드들이 서브클래스에 오버라이드, 즉 재정의되지 않도록 하면 된다.
+아래의 코드는 `Bag`클래스를 상속받아 가방 가격을 할인 받을 수 있게 하는 `DiscountedBag`클래스를 구현한 것이다.
+
+```java
+public class DiscountedBag extends Bag {
+    private double discountedRate = 0;
+    
+    public void setDiscountedRate(double discountedRate) {
+        this.discountedRate = discountedRate;
+    }
+    
+    public void applyDiscount(int price) {
+        super.setPrice(price - (int) (discountedRate * price));
+    }
+}
+```
+
+`DiscountedBag`클래스는 할인율을 설정해서 할인된 가격을 계산하는 기능이 추가되었다. 기존의 `Bag`클래스에 있던 가격을 설정하고 조회하는 기능은 변경 없이 그대로 상속받았다.
+
+```java
+// Bag 클래스
+Bag bag1 = new Bag();
+Bag bag2 = new Bag();
+
+bag1.setPrice(50000);
+System.out.println(bag1.getPrice());
+
+bag2.setPrice(bag1.getPrice());
+System.out.println(bag2.getPrice());
+```
+
+```java
+// DistcountedBag 클래스
+DiscountedBag bag3 = new DiscountedBag();
+DiscountedBag bag4 = new DiscountedBag();
+
+bag3.setPrice(50000);
+System.out.println(bag3.getPrice());
+
+bag4.setPrice(bag3.getPrice());
+System.out.println(bag4.getPrice());
+```
+
+위의 두 코드는 `Bag`클래스 객체와 `DiscountedBag`클래스 객체를 사용해 작성되었다. 위의 두 코드의 실행결과는 동일하다. 
+`Bag`클래스의 `setPrice()`와 `getPrice()`메서드가 `DiscountedBag`클래스에서 재정의되지 않았기 때문이다.
+즉, `Bag`클래스와 `DiscountedBag`클래스 간의 상속관계가 LSP를 위반하지 않았다는 것을 의미한다.
+
+그렇다면 만약 `setPrice()`메서드를 아래의 코드와 같이 오버라이드하면 위의 코드처럼 동일한 결과를 가져올까? 결론부터 말하자면 그렇지 않다.
+수정된 `DiscountedBag` 클래스가 일반적으로 방정식 `[b.setPrice(p)].getPrice() == p`를 만족하지 못하기 때문이다.
+이유는 할인율이 0이 아닐 때는 `setPrice()`메서드를 실행한 후 `DiscountedBag`객체의 `price`속성 값이 `p`에서 `discountRate * price`을 차감한 결과가 되며 이는 `p`와 같지 않기 때문이다.
+
+즉, 아래의 코드는 `Bag`클래스의 `setPrice()`를 재정의한 `DiscountedBag`클래스의 구현은 `Bag`클래스의 행위와 일관되지 않으므로 LSP에 만족하지 않는다. 
+```java
+public class DiscountedBag extends Bag {
+    private double discountedRate;
+    
+    public void setDiscountedRate(double discountedRate) {
+        this.discountedRate = discountedRate;
+    }
+    
+    // 메서드 오버라이드
+    public void setPrice(int price) {
+        super.setPrice(price - (int) (discountedRate * price));
+    }
+}
+```
+
+이전에 피터코드의 상속규칙에서 "서브 클래스가 슈퍼 클래스의 책임을 무시하거나 재정의하지 않고 확장만 수행한다."라는 규칙을 배운적이 있다.
+이는 슈퍼 클래스의 메서드를 오버라이드하지 않는 것과 같은 의미이다.
+
+즉, 피터코드의 상속규칙을 지키는 것은 LSP를 만족시키는 하나의 방법이다.
+
+**LSP를 만족시키는 가장 간단한 방법은 재정의를 하지 않는 것이다.**
 
 ## 4. 의존역전 원칙(Dependency Inversion Principle)
 
