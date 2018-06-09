@@ -283,4 +283,74 @@ public class DiscountedBag extends Bag {
 
 ## 4. 의존역전 원칙(Dependency Inversion Principle)
 
+객체 사이에 서로 도움을 주고 받으면 의존관계가 발생한다. DIP는 그러한 의존관계를 맺을 때의 가이드라인에 해당한다.
+
+**DIP는 의존관계를 맺을 때 변화하기 쉬운 것 또는 자주 변화하는 것보다는 변화하기 어려운 것, 거의 변화가 없는 것에 의존하라는 원칙이다.**
+
+- 변하기 여러운 것 : 정책, 전략과 같은 큰 흐름이나 개념같은 추상 적인 것
+- 변하기 쉬운 것 : 구체적인 방식, 사물 등과 같은 것
+
+예를 들어보자. 아이가 장난감을 가지고 노는 경우에 어떨 때는 자동차를 어떨 때는 레고를 가지고 놀게 될 것이다. 
+구체적인 장난감은 변하기 쉬운 것이지만 장난감을 가지고 노는 것은 변하기 어려운 것이다. 아래의 그림은 장난감 클래스에 DIP를 적용한 것이다.
+
+![]()
+
+객체지향 관점에서는 이와 같이 변하기 어려운 추상적인 것들을 표현하는 수단으로 추상클래스와 인터페이스가 있다.
+**DIP를 만족하려면 어떤 클래스가 도움을 받을 때 구체적인 클래스보다는 인터페이스나 추상클래스와 의존관계를 맺도록 설계해야한다.
+DIP를 만족하는 설계는 변화에 유연한 시스템이 된다.**
+
+- 인터페이스, 추상클래스 : 변하지 않는 것
+- 구체적인 클래스 : 변하는 것
+
+DIP를 만족하면 의존성 주입이라는 기술로 변화를 쉽게 수용할 수 있는 코드를 작성할 수 있다. 의존성 주입이란 말 그대로 클래스 외부에서 의존되는 것을 대상 객체의 인스턴스 변수에 주입하는 기술이다.
+의존성 주입을 이용하면 아래의 코드와 같이 대상 객체를 변경하지 않고도 외부에서 대상 객체의 외부 의존 객체를 바꿀수 있다.
+
+```java
+public class Kid {
+    private Toy toy;
+    
+    public void setToy(Toy toy) {
+        this.toy = toy;
+    }
+    
+    public void play() {
+        System.out.println(toy.toString());
+    }
+}
+```
+```java
+public class Robot extends Toy {
+    public String toString() {
+        return "Robot";
+    }
+}
+
+public class Lego extends Toy {
+    public String toString() {
+        return "Lego";
+    }
+}
+
+```
+```java
+public class Main {
+    public static void main(String[] args){
+        Kid kid = new Kid();
+        
+        Toy robot = new Robot();
+        kid.setToy(robot);
+        kid.play();
+        
+        // 아이의 마음이 바뀌어 레고를 가지고 놀게 되었다.
+        Toy lego = new Lego();
+        kid.setToy(lego);
+        kid.play();
+        // 기존의 코드에 영향을 받지 않고 장난감을 바꿀수 있다.
+    }
+}
+```
+
+
+
+ 
 ## 5. 인터페이스 분리 원칙(Interface Segregation Principle)
