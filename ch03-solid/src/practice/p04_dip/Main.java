@@ -1,4 +1,4 @@
-package practice.p01_dip;
+package practice.p04_dip;
 
 public class Main {
 
