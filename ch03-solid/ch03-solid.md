@@ -293,7 +293,7 @@ public class DiscountedBag extends Bag {
 예를 들어보자. 아이가 장난감을 가지고 노는 경우에 어떨 때는 자동차를 어떨 때는 레고를 가지고 놀게 될 것이다. 
 구체적인 장난감은 변하기 쉬운 것이지만 장난감을 가지고 노는 것은 변하기 어려운 것이다. 아래의 그림은 장난감 클래스에 DIP를 적용한 것이다.
 
-![]()
+![DIP](https://raw.githubusercontent.com/walbatrossw/java-design-patterns/master/ch03-solid/img/dip1.png)
 
 객체지향 관점에서는 이와 같이 변하기 어려운 추상적인 것들을 표현하는 수단으로 추상클래스와 인터페이스가 있다.
 **DIP를 만족하려면 어떤 클래스가 도움을 받을 때 구체적인 클래스보다는 인터페이스나 추상클래스와 의존관계를 맺도록 설계해야한다.
@@ -350,7 +350,4 @@ public class Main {
 }
 ```
 
-
-
- 
 ## 5. 인터페이스 분리 원칙(Interface Segregation Principle)
