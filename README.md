@@ -6,4 +6,8 @@
 
 - [ch03-solid : SOLID 원칙](https://github.com/walbatrossw/java-design-patterns/blob/master/ch03-solid/ch03-solid.md)
 
+- [ch04-design-patterns : 디자인 패턴](https://github.com/walbatrossw/java-design-patterns/blob/master/ch04-design-patterns/ch04-design-patterns.md)
+
+- [ch05-strategy-pattern : 전략 패턴]()
+
 
