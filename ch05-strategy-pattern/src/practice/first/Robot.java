@@ -1,4 +1,4 @@
-package practice.before;
+package practice.first;
 
 // 로봇 추상 클래스
 public abstract class Robot {
@@ -13,7 +13,10 @@ public abstract class Robot {
         return name;
     }
 
+    // 공격
     public abstract void attack();
+
+    // 이동
     public abstract void move();
 
 }

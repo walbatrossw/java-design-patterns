@@ -1,4 +1,4 @@
-package practice.before;
+package practice.first;
 
 public class TeakwonV extends Robot {
 

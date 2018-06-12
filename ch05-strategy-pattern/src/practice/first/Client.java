@@ -1,4 +1,4 @@
-package practice.before;
+package practice.first;
 
 public class Client {
     public static void main(String[] args) {
