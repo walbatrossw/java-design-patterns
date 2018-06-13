@@ -1,4 +1,4 @@
-package practice.first;
+package practice.before;
 
 public class Atom extends Robot {
 

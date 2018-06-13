@@ -1,4 +1,4 @@
-package practice.first;
+package practice.before;
 
 // 로봇 추상 클래스
 public abstract class Robot {
