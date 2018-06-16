@@ -9,7 +9,7 @@
 
 아래의 그림은 전략 패턴의 컬레보레이션이다.
 
-![전략 패턴 컬레보레이션]()
+![전략 패턴 컬레보레이션](http://www.plantuml.com/plantuml/png/Iyv9B2vMSCxFAqcjAE7A1595QOd9gGh19KM99QdfbLp9C0N9HQabgJ1XGnpYHZZ4ZRcue7OeAEJhsi6DLx1Iq2s6MGKNjAdHqyDY9Nvv8mBoI4wmKj1EXZ1zKqioybCqDBcG7AGDSn1S4iCfHAao8agLCJPL0000)
 
 전략 패턴에서 나타나는 역할이 수행하는 작업은 다음과 같다.
 
@@ -19,7 +19,7 @@
 
 아래의 그림은 전략 패턴의 순차 다이어그램이다.
 
-![전략 패턴 순차 다이어그램]()
+![전략 패턴 순차 다이어그램](http://www.plantuml.com/plantuml/png/XL0x3i8m3Drz2e_jmD2CgEh2pCG9Gcfef2Yk6WzmUoAbAOIsi3dlbsSFjYUyCSkL7p3gIQone_Q29sV9Imcn5tgKs4KcBNH_0YG37he5moEsBPg9uWkx3a0xmP39G8wCMFOmAmpxE0bbUmDBK0nTiT_fv0BjHQcVKMeLvVkvBCcou7k_-GxHzS5NeQbJXxz2LQSVjeGcJMUIWVkgBc-MKCZgdQkKwYgtsZUfJLDi-080)
 
 클라이언트가 원하는 전략 객체를 생성하고, 이를 Context 객체에 바인딩하면 Context 객체는 바인딩된 전략 객체의 타입에 따라 적절한 행위를 실행한다.
 
@@ -28,7 +28,7 @@
 
 #### 2.1 로봇설계
 
-![로봇 설계 클래스 다이어그램]()
+![로봇 설계 클래스 다이어그램](http://www.plantuml.com/plantuml/png/Iyv9B2vM2CfFoY_X0fCALWgwUOcvgK0wkAGeCoyTBgmDPcY09AqWKfe8kVJK4Z-WX8Oc5ds99IM9oTbWgRByp1I4H6v-MIf2c2iPx9QGnDJiyloyC2uO0oWFOw9QZgG0mmvaEQpME9RavtA12A0uY48r6Yg1OInC7Cr8Y8ziQdHr4Sv74WFf0W00)
 
 클래스 다이어그램에서 Atom클래스와 TaekwonV 클래스는 Robot이라는 추상 클래스의 자식 클래스로 설정되어있다.
 이렇게 설계된 이유는 Atom과 TaekwonV는 둘다 공격과 이동 기능이 있는 로봇의 한 종류이기 때문이다.
