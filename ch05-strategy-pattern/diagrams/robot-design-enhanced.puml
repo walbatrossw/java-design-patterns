@@ -1,0 +1,55 @@
+@startuml
+class Robot {
+    -name : String
+    +Robot(Name : String)
+    +getName() : String
+    +move() : void
+    +attack() : void
+    +setMovingStrategy(movingStrategy : MovingStrategy) : void
+    +setAttackStrategy(attackStrategy : AttackStrategy) : void
+}
+
+class Atom {
+    +Atom(name : String)
+}
+
+class TaekwonV {
+    +TaekwonV(name : String)
+}
+
+Robot <|-- Atom
+Robot <|-- TaekwonV
+
+interface MovingStrategy {
+    +move() : void
+}
+
+class WalkingStrategy {
+    +move() : void
+}
+
+class FlyingStrategy {
+    +move() : void
+}
+
+MovingStrategy <|-- WalkingStrategy
+MovingStrategy <|-- FlyingStrategy
+MovingStrategy <-- Robot
+
+interface AttackStrategy {
+    +move() : void
+}
+
+class PunchStrategy {
+    +move() : void
+}
+
+class MissileStrategy {
+    +move() : void
+}
+
+AttackStrategy <|-- PunchStrategy
+AttackStrategy <|-- MissileStrategy
+AttackStrategy <-- Robot
+
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+
+hide footbox
+participant Client
+participant Context
+participant Strategy
+
+Client -> Strategy : << create >>
+
+alt strategy selection
+create concreteStrategy1
+Strategy -> concreteStrategy1 : << create >>
+else
+create concreteStrategy2
+Strategy -> concreteStrategy2 : << create >>
+end
+
+alt setStrategy
+Client -> Context : setStrategy(s1)
+else
+Client -> Context : setStrategy(s2)
+end
+
+Client -> Context : contextMethod()
+
+alt strategyMethod
+Context -> concreteStrategy1 : strategyMethod()
+else
+Context -> concreteStrategy2 : strategyMethod()
+end
+
+@enduml

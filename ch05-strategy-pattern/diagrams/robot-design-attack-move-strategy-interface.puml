@@ -1,0 +1,25 @@
+@startuml
+interface AttackStrategy
+AttackStrategy : + attack() :void
+
+class PunchStrategy
+PunchStrategy : + attack() :void
+
+class MissileStrategy
+MissileStrategy : + attack() :void
+
+AttackStrategy <|-- PunchStrategy
+AttackStrategy <|-- MissileStrategy
+
+interface MovingStrategy
+MovingStrategy : + move() :void
+
+class WalkingStrategy
+WalkingStrategy : + move() :void
+
+class FlyingStrategy
+FlyingStrategy : + move() :void
+
+MovingStrategy <|-- WalkingStrategy
+MovingStrategy <|-- FlyingStrategy
+@enduml

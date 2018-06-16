@@ -1,0 +1,21 @@
+@startuml
+class Robot
+Robot : -name : String
+Robot : +Robot(name:String)
+Robot : +getName() : String
+Robot : +attack() : void
+Robot : +move() : void
+
+class TaekwonV
+TaekwonV : TaekwonV(name:String)
+TaekwonV : +attack() : void
+TaekwonV : +move() : void
+
+class Atom
+Atom : Atom(name:String)
+Atom : +attack() : void
+Atom : +move() : void
+
+Robot <|-- TaekwonV
+Robot <|-- Atom
+@enduml
