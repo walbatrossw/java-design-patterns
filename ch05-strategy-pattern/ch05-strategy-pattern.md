@@ -118,8 +118,46 @@ public class Client {
 - 기존 로봇의 공격 또는 이동방법을 수정하려면? 예를 들어 아톰은 날 수 없고 걷게만 하고, 태권브이가 날 수 있게 한다면?
 - 새로운 로봇을 만들어 기존의 공격 또는 이동방법을 추가하거나 수정하려면? 새로운 로봇으로 선가드 클래스를 만들어 태권브이의 미사일 공격을 추가한다면?
 
-기존의 로봇 공격과 이동방법을 수정하는 경우는 다음과 같이 수정할 수 있다.
+기존의 로봇의 공격과 이동방법을 수정하는 경우는 다음과 같이 수정할 수 있다.
 
 ```java
+// 태권브이 클래스 공격과 이동 방법 수정
+public class TaekwonV extends Robot {
 
+    public TeakwonV(String name) {
+        super(name);
+    }
+
+    @Override
+    public void attack() {
+        System.out.println("I have strong punch and can attack with it.");
+    }
+
+    @Override
+    public void move() {
+        System.out.println("I can only walk.");
+    }
+
+}
+```
+
+```java
+// 아톰 클래스 공격과 이동 방법 수정
+public class Atom extends Robot {
+
+    public Atom(String name) {
+        super(name);
+    }
+
+    @Override
+    public void attack() {
+        System.out.println("I have strong punch and can attack with it.");
+    }
+
+    @Override
+    public void move() {
+        System.out.println("I can walk.");
+    }
+
+}
 ```

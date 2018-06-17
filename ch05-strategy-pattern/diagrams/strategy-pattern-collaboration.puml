@@ -1,4 +1,6 @@
 @startuml
+title Strategy Pattern
+
 class Context
 interface Strategy
 class ConcreteStrategy1
