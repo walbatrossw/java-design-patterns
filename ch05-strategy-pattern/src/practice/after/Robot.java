@@ -10,6 +10,14 @@ public abstract class Robot {
         this.name = name;
     }
 
+    public void move() {
+        movingStrategy.move();
+    }
+
+    public void attack() {
+        attackStrategy.attack();
+    }
+
     public String getName() {
         return name;
     }

@@ -1,4 +1,10 @@
 package practice.after;
 
-public class FlyingStrategy {
+public class FlyingStrategy implements MovingStrategy {
+
+    @Override
+    public void move() {
+        System.out.println("I can fly.");
+    }
+
 }
