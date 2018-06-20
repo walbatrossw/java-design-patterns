@@ -1,4 +1,4 @@
-package exercise.p03;
+package exercise.p03_1_code;
 
 public interface PricePolicy {
 

@@ -1,0 +1,95 @@
+@startuml
+class Ball {
+    + {static} SIZE : int
+    + {static} INTERVAL : int
+    - x : int
+    - y : int
+    - xInterval : int
+    - yInterval : int
+    - directionsStrategy : directionsStrategy
+    - drawStrategy : DrawStrategy
+    - color : Color
+    + Ball(x : int, y : int)
+    + getX()
+    + setX(int x)
+    + getY()
+    + setY(int y)
+    + getXInterval()
+    + getYInterval()
+    + setIntervals(xInterval :int, yInterval : int)
+    + setDirectionsStrategy(directionsStrategy : DirectionsStrategy )
+    + setDrawStrategy(drawStrategy : DrawStrategy )
+    + getColor()
+    + setColor(color : Color)
+    + draw()
+    + move()
+    + run()
+}
+note right : 공 클래스, 공의 위치와 공의 이동 간견을 가지며 \n DirectionStrategy와 DrawStrategy 추상 클래스에 \n 따라 각각 다른 알고리즘이 실행된다.
+
+class BallFrame {
+    - {static} serialVersionUID : long
+    + {static} WIDTH : int
+    + {static} HEIGHT : int
+    - field : Field
+    + BallFrame(balls : Ball[])
+}
+note left : JFrame 클래스를 상속받아 \n 프로그램 전체의 프레임을 \n 구성하는 클래스
+
+class Field {
+    - {static} serialVersionUID : long
+    - balls : Ball[]
+    + Field(balls Ball[])
+    + paint
+    + run()
+}
+note left : JPanel 클래스를 상속 받아 \n 공이 직접 움직이는 클래스로, \n paint 함수를 사용해 초당 30번씩 \n 공을 뿌려줌
+
+abstract class DirectionStrategy {
+    + {abstract} move(ball : Ball)
+}
+note right : 공의 방향을 결졍하는 전략 추상 클래스
+
+class HorizontalMoveStrategy {
+    + {abstract} move(ball : Ball)
+}
+note bottom : DirectionStrategy 추상클래스를 \n상속받아 수평(좌우)방향으로 \n공의 움직임을 결정하는 클래스
+
+class VerticalMoveStrategy {
+    + {abstract} move(ball : Ball)
+}
+note bottom : DirectionStrategy 추상클래스를 \n상속받아 수직(수직)방향으로 \n공의 움직임을 결정하는 클래스
+
+class DiagonalMoveStrategy {
+    + {abstract} move(ball : Ball)
+}
+note bottom : DirectionStrategy 추상클래스를 \n상속받아 대간선 방향으로 \n공의 움직임을 결정하는 클래스
+
+abstract class DrawStrategy {
+    + {abstract} draw(ball : Ball)
+}
+note left : 공을 그리는 방법(색깔)을 \n 결정하는 전략 추상 클래스
+
+class RedDrawStrategy {
+    + draw(ball :Ball)
+}
+note bottom : DrawStrategy 추상클래스를 \n상속 받아 빨간색으로 공의 색을 \n결정하는 실제 클래스
+
+class BlueDrawStrategy {
+    + draw(ball :Ball)
+}
+note bottom : DrawStrategy 추상클래스를 \n상속 받아 파란색으로 공의 색을 \n결정하는 실제 클래스
+
+BallFrame .> Ball
+BallFrame --> Field
+
+Ball --> DrawStrategy
+DrawStrategy <|.. RedDrawStrategy
+DrawStrategy <|.. BlueDrawStrategy
+
+Ball --> DirectionStrategy
+DirectionStrategy <|.. HorizontalMoveStrategy
+DirectionStrategy <|.. VerticalMoveStrategy
+DirectionStrategy <|.. DiagonalMoveStrategy
+
+@enduml

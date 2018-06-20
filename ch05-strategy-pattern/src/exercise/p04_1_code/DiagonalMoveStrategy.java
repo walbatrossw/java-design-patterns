@@ -1,4 +1,4 @@
-package exercise.p05;
+package exercise.p04_1_code;
 
 public class DiagonalMoveStrategy extends DirectionsStrategy {
 

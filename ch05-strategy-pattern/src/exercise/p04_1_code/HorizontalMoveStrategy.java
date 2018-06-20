@@ -1,6 +1,6 @@
-package exercise.p05;
+package exercise.p04_1_code;
 
-public class HorizonalMoveStrategy extends DirectionsStrategy {
+public class HorizontalMoveStrategy extends DirectionsStrategy {
     @Override
     public void move(Ball ball) {
         ball.setIntervals(Ball.INTERVAL, 0);

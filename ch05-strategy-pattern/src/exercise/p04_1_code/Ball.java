@@ -1,4 +1,4 @@
-package exercise.p05;
+package exercise.p04_1_code;
 
 import java.awt.*;
 
@@ -38,7 +38,7 @@ public class Ball extends Thread {
         return xInterval;
     }
 
-    public int getyInterval() {
+    public int getYInterval() {
         return yInterval;
     }
 

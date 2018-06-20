@@ -1,4 +1,4 @@
-package exercise.p03;
+package exercise.p03_1_code;
 
 public class Client {
     public static void main(String[] args) {
