@@ -6,7 +6,7 @@ public class RedDrawStrategy extends DrawStrategy {
 
     @Override
     public void draw(Ball ball) {
-        ball.setColor(Color.BLACK);
+        ball.setColor(Color.red);
     }
 
 }

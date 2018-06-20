@@ -2,7 +2,8 @@ package exercise.p05;
 
 import java.awt.*;
 
-public class Ball {
+public class Ball extends Thread {
+
     public static final int SIZE = 20;
     public static final int INTERVAL = 10;
     private int x, y;
@@ -11,7 +12,7 @@ public class Ball {
     private DrawStrategy drawStrategy;
     private Color color;
 
-    public Ball(int x, int y, int xInterval) {
+    public Ball(int x, int y) {
         this.x = x;
         this.y = y;
         this.xInterval = xInterval;
@@ -33,7 +34,7 @@ public class Ball {
         this.y = y;
     }
 
-    public int getxInterval() {
+    public int getXInterval() {
         return xInterval;
     }
 
