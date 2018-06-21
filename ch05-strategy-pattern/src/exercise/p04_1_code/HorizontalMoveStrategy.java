@@ -1,5 +1,6 @@
 package exercise.p04_1_code;
 
+// 수평 이동 전략
 public class HorizontalMoveStrategy extends DirectionsStrategy {
     @Override
     public void move(Ball ball) {

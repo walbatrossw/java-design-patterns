@@ -2,15 +2,16 @@ package exercise.p04_1_code;
 
 import java.awt.*;
 
+// 공 클래스
 public class Ball extends Thread {
 
-    public static final int SIZE = 20;
-    public static final int INTERVAL = 10;
-    private int x, y;
-    private int xInterval, yInterval;
-    private DirectionsStrategy directionsStrategy;
-    private DrawStrategy drawStrategy;
-    private Color color;
+    public static final int SIZE = 20;      // 크기
+    public static final int INTERVAL = 10;  // 간격
+    private int x, y;                       // x, y 좌표
+    private int xInterval, yInterval;       // x, y 간격
+    private DirectionsStrategy directionsStrategy;  // 방향 전략
+    private DrawStrategy drawStrategy;              // 그리기 전략
+    private Color color;                            // 색
 
     public Ball(int x, int y) {
         this.x = x;
