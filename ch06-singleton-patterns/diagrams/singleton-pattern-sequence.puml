@@ -1,0 +1,16 @@
+@startuml
+
+hide footbox
+
+participant Client
+participant Singleton
+
+Client -> Singleton : getInstance()
+
+alt instance == null
+create instance
+Singleton -> instance : <<create>>
+end
+
+Singleton -> Client : instance
+@enduml
