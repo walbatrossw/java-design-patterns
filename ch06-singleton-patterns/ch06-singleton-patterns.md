@@ -317,3 +317,213 @@ public class Printer {
 - 정적 변수에 인스턴스를 만들어 바로 초기화하는 방법
 - 인스턴스를 만드는 메서드에 동기화하는 방법
 
+아래는 `printer`라는 정적 변수에 `Printer` 인스턴스를 만들어 초기화하는 방법으로 코드를 작성한 것이다.
+
+```java
+// 프린터 클래스
+public class Printer {
+
+    // 정적 변수에 Printer 인스턴스를 만들어 초기화
+    private static Printer printer = new Printer();
+    private int counter = 0;
+
+    private Printer() {
+
+    }
+
+    public static Printer getPrinter() {
+        return printer;
+    }
+
+    public void print(String str) {
+        counter++;
+        System.out.println(str);
+    }
+
+}
+```
+
+정적 변수는 객체가 생성되기 전 클래스가 메모리에 로딩될 때 만들어져 초기화가 한번만 실행된다. 또한 정적 변수는 프로그램이 시작될 때부터
+종료될 때까지 없어지지 않고 메모리에 계속 상주하여 클래스에서 생성된 모든 객체에서 참조할 수 있다. 
+
+정적 변수의 이러한 특징 때문에 `private static Printer printer = new Printer();` 구문이 실행되면 정적 변수 `printer`에 `Printer`
+클래스 인스턴스가 바인딩되며 `getPrinter()`라는 정적 메서드를 통해 참조되는 인스턴스를 얻어올 수 있다. 이 방법은 다중 스레드 환경에서
+문제를 일으켰던 `if(printer == null)`라는 조건 검사 구문을 원천적으로 제거하기 위한 방법이다.
+
+아래는 위의 코드를 바탕으로 실행한 결과를 콘솔창에 출력한 모습이다. 오직 객체 하나만 생성되는 것을 확인할 수 있다.
+```
+1 - user print using practice.after_static_variable_init_instance.Printer@4554617c.
+2 - user print using practice.after_static_variable_init_instance.Printer@4554617c.
+3 - user print using practice.after_static_variable_init_instance.Printer@4554617c.
+4 - user print using practice.after_static_variable_init_instance.Printer@4554617c.
+5 - user print using practice.after_static_variable_init_instance.Printer@4554617c.
+```
+
+이제 다음으로 인스턴스를 만드는 메서드를 동기화하는 방법에 대해 알아보자. 아래는 `Printer`클래스의 객체를 얻는 `getPrinter()` 메서드를 
+동기화하는 코드이다.
+```java
+// 프린터 클래스
+public class Printer {
+
+    private static Printer printer = null;
+
+    private Printer() {
+
+    }
+
+    // 동기화 메서드
+    public synchronized static Printer getPrinter() {
+
+        // 프린터 인스턴스 생성 여부 확인
+        if (printer == null) {
+            printer = new Printer(); // 프린터 인스턴스 생성
+        }
+
+        return printer;
+    }
+
+    public void print(String str) {
+        System.out.println(str);
+    }
+}
+```
+위의 코드는 다중 스레드 환경에서 동시에 여러 스레드가 `getPrinter()` 메서드를 소유하는 객체에 접근하는 것을 방지한다. 결과적으로 `Printer`
+클래스의 인스턴스가 오직 하나의 인스턴스만 생성한다.
+
+실행결과는 다음과 같은데 `Printer`클래스의 객체가 하나만 생성된 것을 확인할 수 있다.
+
+```
+3 - Thread print using practice.after_synchronized_method.Printer@6f9777db.2
+4 - Thread print using practice.after_synchronized_method.Printer@6f9777db.4
+2 - Thread print using practice.after_synchronized_method.Printer@6f9777db.3
+5 - Thread print using practice.after_synchronized_method.Printer@6f9777db.2
+1 - Thread print using practice.after_synchronized_method.Printer@6f9777db.5
+```
+
+하지만 `Printer` 객체가 하나만 생성되었음에도 여전히 `counter` 변수의 값이 이상하게 출력되는데 이것은 여러 개의 스레드가 하나뿐인 `counter`
+변수 값에 동시에 접근해 갱신하기 때문이다. 따라서 이 문제를 해결하기 위해서는 아래와 같이 `print()` 메서드의 `counter` 변수를 변경하는 부분도
+동기화할 필요가 있다.
+
+```java
+// 프린터 클래스
+public class Printer {
+
+    private static Printer printer = null;
+    private int count = 0;
+
+    private Printer() {
+
+    }
+
+    // 동기화
+    public synchronized static Printer getPrinter() {
+
+        // 프린터 인스턴스 생성 여부 확인
+        if (printer == null) {
+            printer = new Printer(); // 프린터 인스턴스 생성
+        }
+
+        return printer;
+    }
+
+    public void print(String str) {
+        // 오직 하나의 스레드만 접근을 허용
+        synchronized (this) {
+            count++;
+            System.out.println(str + count);
+        }
+    }
+}
+```
+
+위의 코드를 실행한 결과는 아래와 같다. 위의 실행결과와 다르게 `counter` 변수가 제대로 출력되는 것을 확인할 수 있다.
+
+```
+1 - Thread print using practice.after_synchronized_method.Printer@f448da4.1
+2 - Thread print using practice.after_synchronized_method.Printer@f448da4.2
+5 - Thread print using practice.after_synchronized_method.Printer@f448da4.3
+4 - Thread print using practice.after_synchronized_method.Printer@f448da4.4
+3 - Thread print using practice.after_synchronized_method.Printer@f448da4.5
+```
+
+## 3. 싱글턴 패턴과 정적 클래스
+
+실제로 굳이 싱글턴 패턴을 사용하지 않고 정적 메서드로만 이루어진 정적 클래스를 사용해도 동일한 효과를 얻을 수 있다. 아래의 코드는 `Printer`
+클래스를 싱글턴 패턴으로 구현하지 않고 정적 클래스로 구현한 것이다.
+
+```java
+// 프린터 클래스
+public class Printer {
+
+    private static int counter = 0;
+
+    // 메서드 동기화
+    public synchronized static void paint(String str) {
+        counter++;  // 카운터값 증가
+        System.out.println(str + counter);
+    }
+}
+```
+
+```java
+// 사용자 스레드 클래스
+public class UserThread extends Thread {
+
+    // 스레드 생성
+    public UserThread(String name) {
+        super(name);
+    }
+
+    // 현재 스레드 이름 출력
+    public void run() {
+        Printer.paint(Thread.currentThread().getName() + " print using" + ".");
+    }
+
+}
+```
+
+```java
+// 클라이언트 클래스
+public class Client {
+
+    private static final int THREAD_NUM = 5;
+
+    public static void main(String[] args) {
+        UserThread[] user = new UserThread[THREAD_NUM];
+
+        for (int i = 0; i < THREAD_NUM; i++) {
+            user[i] = new UserThread((i + 1) + " - thread");
+            user[i].start();
+        }
+    }
+
+}
+```
+
+실행결과는 다음과 같다. 정적 클래스를 이용하는 방법이 싱글턴 패턴을 이용하는 방법과 가장 차이가 나는 점은 객체를 전혀 생성하지 않고 메서드를
+사용한다는 점이다. 아무 문제 없이 `counter` 변수가 스레드 5개 덕분에 안전하게 공유되어 사용될 수 있음을 알 수 있다. 더욱이 정적 메서드를 
+사용하므로 일반적으로 실행할 때 바인딩되는 인스턴스 메서드를 사용하는 것보다 성능 면에서 우수하다고 할 수 있다.
+
+```
+3 - thread print using.1
+5 - thread print using.2
+1 - thread print using.3
+4 - thread print using.4
+2 - thread print using.5
+```
+
+**그러나 정적 메서드를 사용할 수 없는 경우가 있다. 가장 대표적인 것이 인터페이스를 구현해야하는 경우이다.** 정적 메서드는 인터페이스에서
+사용할 수 없다. 그래서 아래의 코드와 같은 코드는 허용되지 않는다.
+
+```java
+public interface Printer {
+    public static void print(String str); // 허용되지 않음!!!
+}
+
+public class RealPrinter implements Printer {
+    public synchronized static void print(String str) {
+        // ...
+    }
+}
+```
+

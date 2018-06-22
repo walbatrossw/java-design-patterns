@@ -1,6 +1,5 @@
-package practice.before_thread;
+package practice.after_static_variable_init_instance;
 
-import practice.before.Printer;
 
 public class User {
 
