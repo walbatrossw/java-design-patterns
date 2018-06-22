@@ -314,10 +314,10 @@ public class Printer {
 프린터 관리자는 사실 다중 스레드 애플리케이션이 아닌 경우에는 아무런 문제가 되지 않는다. 따라서 이번에는 다중 스레드 애플리케이션에서 
 발생하는 문제를 해결하는 방법 2가지를 알아보자.
 
-- 정적 변수에 인스턴스를 만들어 바로 초기화하는 방법
-- 인스턴스를 만드는 메서드에 동기화하는 방법
+- **정적 변수에 인스턴스를 만들어 바로 초기화하는 방법**
+- **인스턴스를 만드는 메서드에 동기화하는 방법**
 
-아래는 `printer`라는 정적 변수에 `Printer` 인스턴스를 만들어 초기화하는 방법으로 코드를 작성한 것이다.
+**아래는 `printer`라는 정적 변수에 `Printer` 인스턴스를 만들어 초기화하는 방법으로 코드를 작성한 것이다.**
 
 ```java
 // 프린터 클래스
@@ -359,8 +359,8 @@ public class Printer {
 5 - user print using practice.after_static_variable_init_instance.Printer@4554617c.
 ```
 
-이제 다음으로 인스턴스를 만드는 메서드를 동기화하는 방법에 대해 알아보자. 아래는 `Printer`클래스의 객체를 얻는 `getPrinter()` 메서드를 
-동기화하는 코드이다.
+**이제 다음으로 인스턴스를 만드는 메서드를 동기화하는 방법에 대해 알아보자. 아래는 `Printer`클래스의 객체를 얻는 `getPrinter()` 메서드를 
+동기화하는 코드이다.**
 ```java
 // 프린터 클래스
 public class Printer {
@@ -527,3 +527,47 @@ public class RealPrinter implements Printer {
 }
 ```
 
+인터페이스를 사용하는 주된 이유는 대체 구현이 필요한 경우다. 이 것은 특히 모의 객체를 사용해 단위 테스트를 수행할 때 매우 중요하다. 
+아래의 코드를 통해 `UserPrinter` 클래스를 테스트하는 경우를 살펴보자.
+
+```java
+public class UsePrinter {
+    
+    public void doSomething() {
+        
+        String str;
+        
+        // ...
+        
+        str = "something";
+        RealPrinter.print(str);
+    }
+    
+}
+
+public class RealPrinter {
+    
+    public synchronized static void print(String str) {
+        //... 프린터 조작 코드
+    }
+    
+}
+``` 
+
+가령 실제로 출력을 해야하는 프린터가 아직 준비되어 있지 않거나 준비가 되었더라도 테스트할 때 결과가 올바른지 확인하려고 매번 프린트 출력물을
+검사하는 것은 매우 번거로운 일이다. 또한 프린터에 따라 테스트 실행 시간에 병목 현상이 나타날 수도 있다. 단위 테스트가 갖추어야 하는 가장 중요한
+특성은 빠르게 실행되어야 하다는 점을 상기해야한다. 
+
+`UsePrinter` 클래스의 단위 테스트를 실행할 때 실제 프린터를 테스트용 가짜 프린터 객체로 대체하는 것이 좋다. 아래의 클래스 다이어그램은 가짜 
+객체를 대체하기 위해 변경된 설계이다.
+
+![Printer 인터페이스를 참조하는 UserPrinter 클래스](http://www.plantuml.com/plantuml/png/Iyv9B2vM22rE3IZAp2j9BU82asc9oQaAC95ai9AWrCGSL16tn6ouBYwW2KLGZeAU7LmlJCYcHayFnGWK2IIJ0000)
+
+이렇게 설계를 변경하게 되면 `UsePrinter` 클래스는 필요에 따라 실제의 프린터 하드웨어를 구동하는 `RealPrinter`나 `FakePrinter` 클래스를 사용할
+수 있게 된다.
+
+아래의 코드는 이러한 설계를 바탕으로 작성된 코드이다.
+
+```java
+
+```

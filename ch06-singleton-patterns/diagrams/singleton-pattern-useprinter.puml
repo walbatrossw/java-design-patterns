@@ -1,0 +1,10 @@
+@startuml
+class UsePrinter
+interface Printer
+class RealPrinter
+class FakePrinter
+
+UserPrinter .> Printer
+Printer <|.. RealPrinter
+Printer <|.. FakePrinter
+@enduml
