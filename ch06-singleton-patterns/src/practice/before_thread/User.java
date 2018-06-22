@@ -1,4 +1,6 @@
-package practice.before;
+package practice.before_thread;
+
+import practice.before.Printer;
 
 public class User {
 

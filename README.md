@@ -8,6 +8,9 @@
 
 - [ch04-design-patterns : 디자인 패턴](https://github.com/walbatrossw/java-design-patterns/blob/master/ch04-design-patterns/ch04-design-patterns.md)
 
-- [ch05-strategy-pattern : 전략 패턴]()
+- [ch05-strategy-pattern : 전략 패턴](https://github.com/walbatrossw/java-design-patterns/blob/master/ch05-strategy-pattern/ch05-strategy-pattern.md)
+
+- [ch06-singleton-pattern : 싱글턴 패턴](https://github.com/walbatrossw/java-design-patterns/blob/master/ch06-singleton-patterns/ch06-singleton-patterns.md)
+
 
 

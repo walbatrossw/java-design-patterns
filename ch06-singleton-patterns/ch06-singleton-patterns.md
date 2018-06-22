@@ -149,13 +149,171 @@ public class Client {
         User[] users = new User[USER_NUM];
         
         for (int i = 0; i < USER_NUM; i++) {
-            users[i] = new User((i + 1) + "-user"); // User 인스턴스 생성
+            users[i] = new User((i + 1) + " - user"); // User 인스턴스 생성
             users[i].print();
         }
     }
 }
 ```
 
+실행 결과 콘솔창에 출력한 내용은 아래와 같은데 각각의 사용자명과 하나의 프린터 객체만을 사용한 것을 확인할 수 있다. 
+```
+1 - user print using practice.before.Printer@4554617c.
+2 - user print using practice.before.Printer@4554617c.
+3 - user print using practice.before.Printer@4554617c.
+4 - user print using practice.before.Printer@4554617c.
+5 - user print using practice.before.Printer@4554617c.
+```
+
 #### 2.2 문제점
 
+지금까지 하나의 프린터 인스턴스만을 이용해서 여러 곳에서 동일한 프린터를 이용할 수 있도록 코드를 작성했다. 지금까지는 아무런 문제가 없어
+보인다. 하지만 다중 스레드에서 `Printer` 클래스를 이용할 때 인스턴스가 1개 이상 생성되는 경우가 발생할 수 있다.
+
+아래는 인스턴스가 2이상이 생성되는 시나리오이다.
+
+1. `Printer` 인스턴스가 아직 생성되지 않았을 때 스레드1이 `getPrinter()` 메서드의 if문을 실행해 이미 인스턴스가 생성되었는지 확인한다. 
+현재 `printer` 변수는 null인 상태이다.
+
+2. 만약 스레드1이 생성자를 호출해 인스턴스를 만들기 전 스레드2가 if문을 실행해 `printer`변수가 null인지를 확인한다. 현재 null이므로 인스
+턴스를 생성하는 코드, 즉 생성자를 호출하는 코드를 실행하게 된다.
+
+3. 스레드1도 스레드2와 마찬가지로 인스턴스를 생성하는 코드를 실행하게되면 결과적으로 `Printer` 클래스의 인스턴스 2개가 생성된다.  
+
+**위의 시나리오는 경합 조건을 발생시킨다. 경합 조건이란 메모리와 같은 동일한 자원을 2개 이상의 스레드가 이용하려고 경합하는 현상을 말한다.**
+
+물론 지금까지 작성했던 코드에서는 위의 시나리오와 같은 상황이 발생하지 않는다. 그래서 시나리오대로 동작하는지를 확인하기 위해 스레드 스케쥴링을 
+변경해보자.
+
+```java
+// 프린터 클래스
+public class Printer {
+
+    private static Printer printer = null;
+
+    private Printer() {
+
+    }
+
+    public static Printer getPrinter() {
+
+        // 프린터 인스턴스 생성 여부 확인
+        if (printer == null) {
+            // 인스턴스 생성을 고의적으로 1ms 동안 정지
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+
+            }
+            printer = new Printer(); // 프린터 인스턴스 생성
+
+        }
+
+        return printer;
+    }
+
+    public void print(String str) {
+        System.out.println(str);
+    }
+}
+```
+
+```java
+// 사용자 쓰레드 클래스
+public class UserThread extends Thread {
+
+    public UserThread(String name) {
+        super(name);
+    }
+
+    public void run() {
+        Printer printer = Printer.getPrinter();
+        printer.print(Thread.currentThread().getName() + " print using " + printer.toString() + ".");
+    }
+}
+```
+
+```java
+// 클라이언트 클래스
+public class Client {
+
+    private static final int THREAD_NUM = 5;
+
+    public static void main(String[] args) {
+        UserThread[] user = new UserThread[THREAD_NUM];
+        for (int i = 0; i < THREAD_NUM; i++) {
+            user[i] = new UserThread((i + 1) +  " - Thread");
+            user[i].start();
+        }
+    }
+
+}
+```
+
+아래는 콘솔에 출력된 실행 결과이다. 스레드마다 각기 다른 프린터 인스턴스를 사용하여 출력한다.
+
+```
+4 - Thread print using practice.before_thread.Printer@6f9777db.
+2 - Thread print using practice.before_thread.Printer@1dc022f6.
+1 - Thread print using practice.before_thread.Printer@f448da4.
+5 - Thread print using practice.before_thread.Printer@710a3057.
+3 - Thread print using practice.before_thread.Printer@47a2a66c.
+```
+
+그런데 이경우 프린터 인스턴스가 1개 이상 생긴다고 하더라도 이렇다할 문제가 발생되지는 않는다. 그러나 `Printer` 클래스가 상태를 유지해야 
+하는 경우에는 문제가 발생한다. 아래의 코드와 같이 `Printer` 클래스와 같이 `counter` 변수와 같은 값을 인스턴스가 유지해야한다.
+
+```java
+// 프린터 클래스 
+public class Printer {
+
+    private static Printer printer = null;
+    private int counter = 0;
+
+    private Printer() {
+
+    }
+
+    public static Printer getPrinter() {
+
+        // 프린터 인스턴스 생성 여부 확인
+        if (printer == null) {
+
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+
+            }
+            printer = new Printer(); // 프린터 인스턴스 생성
+
+        }
+
+        return printer;
+    }
+
+    public void print(String str) {
+        counter++; // 카운터 값 증가
+        System.out.println(str + counter);
+    }
+}
+```
+
+결과는 생각과 다르게 나왔다. 이와 같이 `Printer` 클래스의 인스턴스가 상태를 유지해야 한다면 문제가 발생한다. 이는 인스턴스마다 `counter`
+변수를  각각 만들어 유지하기 때문이다.
+
+```
+5 - Thread print using practice.before_thread.Printer@20210b0.1
+2 - Thread print using practice.before_thread.Printer@2f8d3330.2
+4 - Thread print using practice.before_thread.Printer@2f8d3330.1
+3 - Thread print using practice.before_thread.Printer@152b4efb.1
+1 - Thread print using practice.before_thread.Printer@6517209b.1
+``` 
+
 #### 2.3 해결책
+
+프린터 관리자는 사실 다중 스레드 애플리케이션이 아닌 경우에는 아무런 문제가 되지 않는다. 따라서 이번에는 다중 스레드 애플리케이션에서 
+발생하는 문제를 해결하는 방법 2가지를 알아보자.
+
+- 정적 변수에 인스턴스를 만들어 바로 초기화하는 방법
+- 인스턴스를 만드는 메서드에 동기화하는 방법
+
