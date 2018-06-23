@@ -1,0 +1,17 @@
+@startuml
+
+class TicketManager
+note top
+class UserThread <<thread>>
+interface Ticket <<interface>>
+class NormalTicket
+class NullTicket
+
+TicketManager <- UserThread
+TicketManager ..> NormalTicket
+TicketManager ..> NullTicket
+UserThread o--> Ticket
+Ticket <|.. NormalTicket
+Ticket <|.. NullTicket
+
+@enduml

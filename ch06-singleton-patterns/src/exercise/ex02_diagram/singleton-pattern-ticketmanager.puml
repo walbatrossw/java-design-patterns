@@ -1,0 +1,25 @@
+@startuml
+
+class TicketManager
+note top : 티켓을 발행할 책임이 있는 클래스. \n싱글턴 패턴으로 구현해 유일한 \n시리얼 번호를 생성한다.
+
+class UserThread <<thread>>
+note top : TicketManager 클래스에게 \n티켓 발행을 요구하는 스레드 클래스
+
+interface Ticket <<interface>>
+note bottom : 티켓 인터페이스. \n시리얼 번호를 설정하고 \n외부에 알려줄 책임이 있다.
+
+class NormalTicket
+note bottom : 정상적인 시리얼 번호가 있는 티켓
+
+class NullTicket
+note bottom : 발행할 수 있는 티켓보다 더 많은 티켓을 \n요구할 때 발행되는 유효하지 못한 티켓
+
+TicketManager <- UserThread
+TicketManager ..> NormalTicket
+TicketManager ..> NullTicket
+UserThread o--> Ticket
+Ticket <|.. NormalTicket
+Ticket <|.. NullTicket
+
+@enduml
