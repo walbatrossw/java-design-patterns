@@ -561,7 +561,7 @@ public class RealPrinter {
 `UsePrinter` 클래스의 단위 테스트를 실행할 때 실제 프린터를 테스트용 가짜 프린터 객체로 대체하는 것이 좋다. 아래의 클래스 다이어그램은 가짜 
 객체를 대체하기 위해 변경된 설계이다.
 
-![Printer 인터페이스를 참조하는 UserPrinter 클래스](http://www.plantuml.com/plantuml/png/Iyv9B2vM22rE3IZAp2j9BU82asc9oQaAC95ai9AWrCGSL16tn6ouBYwW2KLGZeAU7LmlJCYcHayFnGWK2IIJ0000)
+![Printer 인터페이스를 참조하는 UserPrinter 클래스](http://www.plantuml.com/plantuml/png/Iyv9B2vM22rE3IZAp2j9BU82asc9oQaAC95ai9AWrCGSL16tn6ouBYw42GfwTd2jC26R6Zqz51DG990C0W00)
 
 이렇게 설계를 변경하게 되면 `UsePrinter` 클래스는 필요에 따라 실제의 프린터 하드웨어를 구동하는 `RealPrinter`나 `FakePrinter` 클래스를 사용할
 수 있게 된다.
@@ -569,5 +569,95 @@ public class RealPrinter {
 아래의 코드는 이러한 설계를 바탕으로 작성된 코드이다.
 
 ```java
+// 프린터 인터페이스
+public interface Printer {
 
+    public void print(String str);
+
+}
 ```
+
+```java
+// 실제 프린터 클래스
+public class RealPrinter implements Printer {
+
+    private static Printer printer = null;
+
+    private RealPrinter() {
+
+    }
+
+    public synchronized static Printer getPrinter() {
+        if (printer == null) {
+            printer = new RealPrinter();
+        }
+        return printer;
+    }
+
+    @Override
+    public void print(String str) {
+        // 실제 프린터 조작 코드
+    }
+}
+```
+
+```java
+// 테스트용 가짜 프린터 클래스
+public class FakePrinter implements Printer {
+
+    private String str;
+
+    @Override
+    public void print(String str) {
+        this.str = str;
+    }
+
+    public String get() {
+        return str;
+    }
+}
+```
+
+```java
+// 프린터 사용 클래스
+public class UsePrinter {
+
+    public void doSomething(Printer printer, String str) {
+
+        printer.print(str);
+
+    }
+
+}
+```
+
+```java
+// 프린터 테스트 클래스
+public class UsePrinterTest extends TestCase {
+
+    public void testDoSomething() {
+
+        FakePrinter fakePrinter = new FakePrinter();    // 가짜 프린터 객체 생성
+        UsePrinter usePrinter = new UsePrinter();       // 프린터 사용 객체 생성
+
+        String str = "this is a test";
+        usePrinter.doSomething(fakePrinter, str);
+
+        assertEquals("this is a test", fakePrinter.get());
+    }
+
+}
+```
+
+`FakePrinter` 클래스는 실제 출력을 실행하지 않고, `doSomething()` 메서드를 실행할 때 프린터로 올바른 값이 전달되었는지 확인해야 한다.
+따라서 전달된 문자열을 `str` 문자열 변수에 저장하고 나중에 테스트 케이스에서 `get()`메서드를 사용해 확인한다. 
+
+이 방법 외에도 **정적 메서드를 사용해 테스트용 대역 클래스를 만들수 있다.** 이렇게 하려면 싱글턴 클래스에 정적 `setter()` 메서드를 추가하면 된다.
+이 메서드는 인자로 싱글턴 클래스 인스턴스 객체를 참조하도록 하여 실제의 싱글턴 객체를 대신하도록 적절한 변수에 설정한다.
+
+아래의 코드는 프린터 객체를 생산하는 `PrinterFactory` 클래스와 이를 상속받아 테스트용 프린터 객체를 대신 반환하도록 하는 `FakePrinterFactory` 클래스
+코드이다.
+
+```java
+
+``` 

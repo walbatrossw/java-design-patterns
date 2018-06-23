@@ -4,7 +4,7 @@ interface Printer
 class RealPrinter
 class FakePrinter
 
-UserPrinter .> Printer
+UsePrinter .> Printer
 Printer <|.. RealPrinter
 Printer <|.. FakePrinter
 @enduml
