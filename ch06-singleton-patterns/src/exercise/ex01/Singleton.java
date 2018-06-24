@@ -1,13 +1,12 @@
 package exercise.ex01;
 
-import practice.static_class_fake_printer.Printer;
-
+// 싱글턴 확인
 public class Singleton {
 
-    //    private Singleton instance = null;
+    //    private Singleton instance = null; // 정적 변수이야함
     private static Singleton instance = null;
 
-//    public Singleton() {
+//    public Singleton() {  // 접근제어자를 private 이어야함
 //
 //    }
 
@@ -15,8 +14,7 @@ public class Singleton {
 
     }
 
-
-//    public static Singleton getInstance() {
+//    public static Singleton getInstance() { // synchronized 키워드를 사용하여 동기화처리가 필수적임
 //        if (instance == null) {
 //            instance = new Singleton();
 //        }

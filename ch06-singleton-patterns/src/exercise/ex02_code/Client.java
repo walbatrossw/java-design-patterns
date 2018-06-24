@@ -30,7 +30,7 @@ public class Client {
 
         for (int i = 0; i < THREAD_NUM; i++) {
             if (user[i].getMyTicket().getTicketNum() != 0) {
-                System.out.println("User" + i + "-th Thread get ticket" + user[i].getMyTicket().getTicketNum());
+                System.out.println("User " + i + "th Thread get ticket" + user[i].getMyTicket().getTicketNum());
             }
         }
 
