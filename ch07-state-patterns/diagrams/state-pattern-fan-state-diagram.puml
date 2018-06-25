@@ -1,0 +1,11 @@
+@startuml
+
+WORKING --> OFF : switch_off / turnoff()
+WORKING --> ON : stop / suspend()
+ON --> OFF : switch_off / turnoff()
+ON --> WORKING : run / operate()
+OFF --> ON : switch_on[power_exist] / turnon()
+[*] -> OFF
+
+
+@enduml
