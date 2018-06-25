@@ -12,11 +12,12 @@ public class Printer {
 
     public void print(String name) {
         try {
-            Thread.sleep(new Random().nextInt());
+            Thread.sleep(new Random().nextInt(100));
+            System.out.println(name + " is using" + this.toString());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        setAvailable(true);
     }
 
     public void setAvailable(boolean available) {
