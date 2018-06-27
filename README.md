@@ -12,5 +12,5 @@
 
 - [ch06-singleton-pattern : 싱글턴 패턴](https://github.com/walbatrossw/java-design-patterns/blob/master/ch06-singleton-patterns/ch06-singleton-patterns.md)
 
-
+- [ch07-state-patterns : 스테이트 패턴](https://github.com/walbatrossw/java-design-patterns/blob/master/ch07-state-patterns/ch07-state-patterns.md)
 
