@@ -1,0 +1,12 @@
+@startuml
+title 도서관 책 대여 상태머신 다이어그램
+[*] -up-> available
+available -right-> onLoan : checkout
+onLoan -left-> available : return
+onLoan -down-> reserved : reserve
+reserved -up-> onLoan : cancel
+reserved -left-> kept : return
+kept -up-> available : cancel
+kept -up-> available : timeout
+kept -up-> onLoan : checkout
+@enduml

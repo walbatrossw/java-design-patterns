@@ -1,0 +1,46 @@
+@startuml
+title 도서관 책 대여 클래스 다이어그램
+class Context {
+    - state
+    + checkout()
+    + reserve()
+    + cancel()
+    + timeout()
+    + return()
+}
+
+interface State <<interface>> {
+    + checkout()
+    + reserve()
+    + cancel()
+    + timeout()
+    + return()
+}
+
+class available
+hide available circle
+hide method
+hide member
+
+class onLoan
+hide onLoan circle
+hide method
+hide member
+
+class reserved
+hide reserved circle
+hide method
+hide member
+
+class kept
+hide kept circle
+hide method
+hide member
+
+Context o-> State
+State <|.. available
+State <|.. onLoan
+State <|.. reserved
+State <|.. kept
+
+@enduml
