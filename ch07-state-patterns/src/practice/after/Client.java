@@ -1,5 +1,6 @@
 package practice.after;
 
+// 클라이언트 클래스
 public class Client {
     public static void main(String[] args) {
         Light light = new Light();

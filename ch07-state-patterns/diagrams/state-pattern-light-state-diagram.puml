@@ -1,0 +1,7 @@
+@startuml
+[*] -up-> OFF
+OFF -up-> OFF : off_button_pushed
+OFF -down-> ON : on_button_pushed
+ON -up-> OFF : off_button_pushed
+ON --> ON : on_button_pushed
+@enduml
