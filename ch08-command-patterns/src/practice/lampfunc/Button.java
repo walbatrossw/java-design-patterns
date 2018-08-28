@@ -3,6 +3,7 @@ package practice.lampfunc;
 // 버튼 클래스
 public class Button {
 
+    // 램프 객체 참조 변수
     private Lamp theLamp;
 
     // 생성자
