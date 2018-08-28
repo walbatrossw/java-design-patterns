@@ -1,0 +1,18 @@
+@startuml
+
+class Button {
+
++ Button(theLamp : Lamp)
++ pressed() : void
+
+}
+
+class Lamp {
+
++ turnOn() : void
+
+}
+
+Button -> Lamp : -theLamp
+
+@enduml

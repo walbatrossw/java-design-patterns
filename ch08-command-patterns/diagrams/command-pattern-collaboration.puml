@@ -1,0 +1,25 @@
+@startuml
+
+title : Command Pattern Collaboration
+
+class Invoker {
+
+}
+
+interface Command {
+    + execute() : void
+}
+
+class ConcreteCommand {
+    + execute() : void
+}
+
+class Receiver {
+    + action()
+}
+
+Invoker -> Command : -theCommand
+Command <|.. ConcreteCommand
+Receiver <- ConcreteCommand : -receiver
+
+@enduml

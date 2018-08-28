@@ -1,0 +1,50 @@
+@startuml
+
+title 개선된 Button 클래스 다이어그램
+
+class Button {
+
++ Button(theCommand : Command)
++ pressed() : void
++ setCommand(newCommand : Command) : void
+
+}
+
+interface Command {
+
++ execute() : void
+
+}
+
+class AlarmStartCommand {
+
++ execute() : void
+
+}
+
+class LampOnCommand {
+
++ execute() : void
+
+}
+
+
+class Lamp {
+
++ turnOn() : void
+
+}
+
+class Alarm {
+
++ start() : void
+
+}
+
+Lamp <- LampOnCommand : -theLamp
+AlarmStartCommand -> Alarm : -theAlarm
+Button -> Command : -theCommand
+Command <|.. LampOnCommand
+Command <|.. AlarmStartCommand
+
+@enduml

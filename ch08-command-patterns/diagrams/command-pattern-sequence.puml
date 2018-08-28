@@ -1,0 +1,20 @@
+@startuml
+
+hide footbox
+
+participant Receiver
+participant aClient
+
+create aCommand
+
+aClient -> aCommand : 1. <<create>>
+
+participant Invoker
+
+aClient -> Invoker : 2. setCommand(aCommand)
+
+Invoker -> aCommand : 3. execute() : void
+
+aCommand -> Receiver : 4. action() : void
+
+@enduml

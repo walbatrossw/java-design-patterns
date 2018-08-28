@@ -78,5 +78,5 @@ hs_err_pid*
 
 codes/codes.iml
 .idea
-ch02-oop-principles/src/ 제거할 예정
-ch03-solid/src/ 제거할 예정
+
+*.iml
