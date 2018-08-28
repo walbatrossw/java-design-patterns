@@ -405,19 +405,121 @@ Lamp On
 위의 클래스 다이어그램을 참조하여 코드를 작성해보자.
 
 ```java
+// 커맨드 인터페이스
+public interface Command {
+
+    // 실행 추상 메서드
+    public abstract void execute();
+
+}
 ```
 
 ```java
+// 버튼 클래스
+public class Button {
+
+    // 커맨드 인터페이스 참조 객체 변수
+    private Command theCommand;
+
+    // 생성자
+    public Button(Command theCommand) {
+        setCommand(theCommand);
+    }
+
+    // 커맨드 인터페이스 설정
+    public void setCommand(Command newCommand) {
+        this.theCommand = newCommand;
+    }
+
+    // 버튼 눌림 인지 메서드
+    public void pressed() {
+        theCommand.execute();
+    }
+
+}
 ```
 
 ```java
+// 램프 클래스
+public class Lamp {
+
+    // 램프 켜기 메서드
+    public void turnOn() {
+        System.out.println("Lamp On.");
+    }
+
+    // 램프 끄기 메서드
+    public void turnOff() {
+        System.out.println("Lamp Off.");
+    }
+
+}
 ```
 
 ```java
+// 램프 켜기 커맨드 클래스 : 커맨드 인터페이스 구현
+public class LampOnCommand implements Command {
+
+    // 램프 참조 객체 변수
+    private Lamp theLamp;
+
+    // 생성자
+    public LampOnCommand(Lamp theLamp) {
+        this.theLamp = theLamp;
+    }
+
+    // 실행 메서드 구현 : 램프 켜기 메서드 호출
+    @Override
+    public void execute() {
+        theLamp.turnOn();
+    }
+
+}
 ```
 
 ```java
+// 램프 끄기 커맨드 클래스 : 커맨드 인터페이스 구현
+public class LampOffCommand implements Command {
+
+    // 램프 참조 객체 변수
+    private Lamp theLamp;
+
+    // 생성자
+    public LampOffCommand(Lamp theLamp) {
+        this.theLamp = theLamp;
+    }
+
+    // 실행 메서드 구현 : 램프 끄기 메서드 호출
+    @Override
+    public void execute() {
+        theLamp.turnOff();
+    }
+
+}
 ```
 
 ```java
+// 클라이언트 클래스
+public class Client {
+
+    public static void main(String[] args) {
+
+        Lamp lamp = new Lamp();                                 // 램프 객체 생성
+        Command lampOnCommand = new LampOnCommand(lamp);        // 커맨드 인터페이스를 구현한 클래스 객체 생성 : 램프 켜기
+        Button button = new Button(lampOnCommand);              // 버튼 객체 생성 : 램프 커맨드 객체 주입
+        button.pressed();                                       // 버튼 누르기 : 램프 켜짐
+
+        Command lampOffCommand = new LampOffCommand(lamp);      // 커맨드 인터페이스를 구현한 클래스 객체 생성 : 램프 끄기
+        button.setCommand(lampOffCommand);                      // 버튼 객체 설정 : 램프 끄기
+        button.pressed();                                       // 버튼 누르기 : 램프 꺼짐
+
+    }
+
+}
 ```
+
+```
+Lamp On.
+Lamp Off.
+```
+

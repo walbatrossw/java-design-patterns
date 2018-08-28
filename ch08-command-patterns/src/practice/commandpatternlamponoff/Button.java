@@ -21,6 +21,4 @@ public class Button {
         theCommand.execute();
     }
 
-
-
 }
