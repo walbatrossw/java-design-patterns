@@ -1,5 +1,7 @@
 @startuml
 
+title : 램프 On/Off 기능을 가진 Button 클래스다이어그램
+
 class Button {
     + Button(theCommand : Command)
     + pressed() : void

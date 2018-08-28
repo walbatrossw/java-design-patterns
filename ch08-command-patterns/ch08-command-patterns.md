@@ -250,3 +250,174 @@ Lamp On
 Alarming...
 ```
 
+위의 코드는 램프 켜기와 알람을 모두 구현하였다. 버튼을 눌렀을 때의 기능을 변경하기 위해 다시 `Button`클래스의 코드를 변경하였다. 이런 수정은 버튼이 눌렸을 때 필요한 기능을
+새로 추가할 때마다 반복적으로 발생하게 된다.
+
+#### 2.3 위 코드의 해결책은?
+
+새로운 기능을 추가하거나 변경하더라도 `Button` 클래스를 그대로 사용하려면 `Button`클래스의 `pressed()`메서드에서 구체적인 기능을 직접 구현하는 대신 **버튼을 눌렀을 때 실행될
+기능을 `Button`클래스 외부에서 제공받아 캡슐화해 `pressed()`메서드에서 호출하는 방법** 을 사용할 수 있다.
+
+![command-pattern-improved-2func-button-diagram](http://www.plantuml.com/plantuml/png/AyaioKbLUBLXpfkM1Qydp55mAYqfoSzJUDkuvVMy6M-wbYYyxbxoPkwMDzEslDg-u_My5LnSoJc9nSKmTTLSNDfGjaP9HgfpVcvkObwAWfK2bAK9b2ueIYqkJatHq0GAb-LdfW25YbDBe0eqybBBCNN1L7BLSd5bvfMa5gKb9gV2P26MfbQa9fUMf6gWg8MupJ4diIWtk2Ing8HO7Jw9kGN-UOHL8oc7g2efBShppyFf28YYOf1JKDM0JR3HHRFOIa4N68WWCIvCF-ZQGSs4g0ApkQ3H09H3DGFAuuA9sjJewQ5QXYg5OHqN0000)
+
+위의 그림은 램프 켜기와 알람 동작을 포함해 여러 가지 기능을 수행할 수 있도록 `Button`클래스를 설계한 클래스 다이어그램이다. `Button`클래스는 램프 켜기, 알람시작 등의 기능을 실행할 때 램프
+클래스와 알람 클래스의 메서드를 직접 호출하지 않는다. 대신 미리 약속된 `Command`인터페이스의 `execute()`메서드를 호출하는데 `LampOnCommand`, `AlarmOnCommand` 클래스에서 `Command`인터페이스를
+`execute()`메서드를 각각 구현한다.
+
+```java
+// 커맨드 인터페이스
+public interface Command {
+
+    // 기능 실행 추상메서드
+    public  abstract void execute();
+
+}
+```
+
+```java
+// 버튼 클래스
+public class Button {
+
+    private Command theCommand; // 커맨드 인터페이스 참조변수
+
+    // 생성자
+    public Button(Command theCommand) {
+        setCommand(theCommand);
+    }
+
+    // 커맨드 인터페이스 set메서드
+    public void setCommand(Command newCommand) {
+        this.theCommand = newCommand;
+    }
+
+    // 버튼 메서드 : 커맨드 인터페이스의 execute메서드 호출
+    public void pressed() {
+        theCommand.execute();
+    }
+
+}
+```
+
+```java
+// 램프 클래스
+public class Lamp {
+
+    // 램프 켜기 메서드
+    public void turnOn() {
+        System.out.println("Lamp On");
+    }
+
+}
+```
+
+```java
+// 램프 커맨드 클래스 : 커맨드 인터페이스 구현
+public class LampOnCommand implements Command {
+
+    // 램프 클래스 참조변수
+    private Lamp theLamp;
+
+    // 생성자
+    public LampOnCommand(Lamp theLamp) {
+        this.theLamp = theLamp;
+    }
+
+    // 기능 실행 메서드 구현 : 램프 켜기
+    @Override
+    public void execute() {
+        theLamp.turnOn();
+    }
+
+}
+```
+
+```java
+// 알람 클래스
+public class Alarm {
+
+    // 알람 울림 메서드
+    public void start() {
+        System.out.println("Alarming...");
+    }
+
+}
+```
+
+```java
+// 알람 커맨드 클래스 : 커맨드 인터페이스 구현
+public class AlarmOnCommand implements Command {
+
+    // 알람 클래스 참조변수
+    private Alarm theAlarm;
+
+    // 생성자
+    public AlarmOnCommand(Alarm theAlarm) {
+        this.theAlarm = theAlarm;
+    }
+
+    // 기능 실행 메서드 구현 : 알람 울림
+    @Override
+    public void execute() {
+        theAlarm.start();
+    }
+
+}
+```
+
+```java
+// 클라이언트 클래스
+public class Client {
+    public static void main(String[] args) {
+
+        Lamp lamp = new Lamp();                             // 램프 객체 생성
+        Command lampOnCommand = new LampOnCommand(lamp);    // 램프 실행 객체 생성
+        Button button1 = new Button(lampOnCommand);         // 버튼1 객체 생성
+        button1.pressed();                                  // 버튼1 누르기 : 램프 켜짐
+
+        Alarm alarm = new Alarm();                          // 알람 객체 생성
+        Command alarmOnCommand = new AlarmOnCommand(alarm); // 알람 실행 객체 생성
+        Button button2 = new Button(alarmOnCommand);        // 버튼2 객체 생성
+        button2.pressed();                                  // 버튼2 누르기 : 알람 울림
+
+        button2.setCommand(lampOnCommand);                  // 버튼2 : 실행 객체 변경
+        button2.pressed();                                  // 버튼2 : 누르기 : 램프 켜짐
+
+    }
+}
+```
+
+```
+Lamp On
+Alarming...
+Lamp On
+```
+
+`Command` 인터페이스를 구현하는 `LampOnCommand`와 `AlarmCommand`객체를 `Button`객체에 설정한다. 그리고 `Button`클래스의 `pressed()`메서드에서 `Command`인터페이스의
+`execute()`메서드를 호출할 수 있게 함으로써 `LampOnCommand`와 `AlarmCommand` 클래스의 `execute()`메서드를 호출이 가능하다.
+
+즉 다시 요약하자면 버튼을 눌렀을 때 필요한 임의의 기능은 `Command`인터페이스를 구현한 클래스의 객체를 `Button`객체에 설정해서 사용할 수 있게된다. 이렇게 함으로써 `Button`클래스의
+코드 변경없이 다양한 동작을 구현할 수 있게 된다.
+
+그렇다면 이제 버튼을 누르는 동작에 따라 램프를 켜거나 끄는 기능을 구현해보자. 아래의 그림은 램프 ON/OFF 기능을 추가한 `Button` 클래스 다이어그램이다.
+
+![command-pattern-improved-onoff-button-diagram](http://www.plantuml.com/plantuml/png/AyaioKbLi59uFM_5soaj2lvv-lvfQGglTcnutRNqpTmMXLSR6juiRr5mAYqfoSzJUDkuvVMy6M-wbhpkNl9cxfOtqxQyshu3g9MBApadiRWOfgoQIm48jA5SZPACLEVytDp4l1IWHL2M9bH9GL5gSN5gYeOcKAeiFpC5AboSMW9Lg96NMewf6wQwbeihCwyajIWjCJaL9WctFhKYDRcq95K3MJN4dJw9kGN-UIIgJqiZJGDSMKbfKPv_7b0LgX_1mcbfIE90xT0GrBLJG7XQ5n60N31HcnezFLHlO962kvWBrSEwGEF1BeIO3M9oeNaHcn8k0000-lvkRWglTcnutRNqpTmMXLSR6juiRr5mAYqfoSzJUDkuvVMy6M-wbhpkNl9cxfOtqxQyshu3g9MBApadiRWOfgoQIm48jA5SZPACLEVytDp4l1IWHL2M9bH9GL5gSN5gYeOcKAeiFpC5AboSMW9Lg96NMewf6wQwbeihCwyajIWjCJaL9WctFhKYDRcq95K3MJN4dJw9kGN-UIIgJqiZJGDSMKbfKPv_7b0LgX_1mcbfIE90xT0GrBLJG7XQ5n60N31HcnezFLHlO962kvWBrSEwGEF1BeIO3M9oeNaHcn8k0000)
+
+위의 클래스 다이어그램을 참조하여 코드를 작성해보자.
+
+```java
+```
+
+```java
+```
+
+```java
+```
+
+```java
+```
+
+```java
+```
+
+```java
+```
