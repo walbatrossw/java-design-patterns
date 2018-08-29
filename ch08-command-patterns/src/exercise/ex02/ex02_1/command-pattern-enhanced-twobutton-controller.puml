@@ -1,0 +1,20 @@
+@startuml
+
+class TwoButtonController {
+
+    + setCommand(command1 : Command, command2 : Command)
+    + button1Pressed() : void
+    + button2Pressed() : void
+
+}
+
+interface Command {
+
+    + execute() : void
+
+}
+
+TwoButtonController -> Command : -command1
+TwoButtonController -> Command : -command2
+
+@enduml

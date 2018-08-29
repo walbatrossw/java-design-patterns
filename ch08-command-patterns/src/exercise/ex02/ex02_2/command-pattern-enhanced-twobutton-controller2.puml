@@ -1,0 +1,43 @@
+@startuml
+
+class TwoButtonController {
+
+    + setCommand(command1 : Command, command2 : Command)
+    + button1Pressed() : void
+    + button2Pressed() : void
+
+}
+
+interface Command {
+
+    + execute() : void
+
+}
+
+class PowerCommand {
+    + PowerCommand(tv : TV)
+    + execute() : void
+}
+
+class MuteCommand {
+    + MuteCommand(mute : Mute)
+    + execute() : void
+}
+
+class TV {
+    -powerOn : Boolean = false
+    -muteOn : Boolean = false
+    + power() : void
+    + mute() : void
+}
+
+TwoButtonController -> Command : -command1
+TwoButtonController -> Command : -command2
+
+Command <|.. PowerCommand
+Command <|.. MuteCommand
+
+MuteCommand --> TV : -tv
+PowerCommand --> TV : -tv
+
+@enduml
