@@ -2,7 +2,7 @@
 
 ## 1. 싱글턴 패턴이란?
 
-인스턴스가 오직 하나만 생성되는 것을 보장하고, 어디에서든 이 인스턴스에 접근할 수 있도록 하는 디자인 패턴이다.
+**인스턴스가 오직 하나만 생성되는 것을 보장하고, 어디에서든 이 인스턴스에 접근할 수 있도록 하는 디자인 패턴이다.**
 원래 싱글턴이라는 단어는 "단 하나의 원소만을 가진 집합"이라는 수학이론에서 유래되었다.
 
 ![싱글턴 패턴 콜라보레이션](http://www.plantuml.com/plantuml/png/AyaioKbL2CxCIyz9BSdFKmX8B2b9BShZuahEIImkHfAevb800bs5pBpYaiIyv5Ge5wv0GnCiegsGdbhY2LK35Ai50000)

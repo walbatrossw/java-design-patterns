@@ -1,0 +1,45 @@
+@startuml
+
+class ElevatorButton {
+    + ElevatorButton(command : Command)
+    + pressed() : void
+}
+
+interface Command {
+    + execute() : void
+}
+
+class ElevatorRequestCommand {
+    - destination : int
+    - direction : Direction
+    + ElevatorRequestCommand(destination : int, direction)
+}
+
+class ElevatorManager {
+    + ElevatorManager(controllerCount : int)
+    + addController(controller : ElevatorController) : void
+    + requestElevator(destination : int, direction : Direction) : void
+    - selectElevator(destination : int, direction : Direction) : int
+}
+
+class ElevatorController {
+    - id : int
+    - curFloor : int
+    + ElevatorController(id : int)
+    + gotoFloor(destination : int) : void
+}
+
+class DestinationSelectionCommand {
+    - destination : int
+    + DestinationSelectionCommand(destination : int, controller : ElevatorController)
+    + execute() : void
+}
+
+ElevatorButton -> Command : -command
+Command <|.. ElevatorRequestCommand
+Command <|.. DestinationSelectionCommand
+ElevatorRequestCommand --> ElevatorManager : -em
+ElevatorManager "-controllers" *-- "1..*" ElevatorController
+DestinationSelectionCommand --> ElevatorController : -controller
+
+@enduml
