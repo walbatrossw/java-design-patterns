@@ -5,19 +5,23 @@ autonumber
 participant ConcreteSubject
 participant ConcreteObserver1
 participant ConcreteObserver2
-
 ConcreteSubject <- ConcreteObserver1 : setState(subjectState : SubjectState) : void
 activate ConcreteSubject
 ConcreteSubject -> ConcreteSubject : notifyObservers() : void
 activate ConcreteSubject
 ConcreteSubject -> ConcreteObserver1 : update() : void
-activate ConcreteObserver1
 deactivate ConcreteSubject
+activate ConcreteObserver1
 ConcreteObserver1 -> ConcreteSubject : getState() : SubjectState
-deactivate ConcreteObserver1
 activate ConcreteSubject
-
-
-
+deactivate ConcreteSubject
+deactivate ConcreteObserver1
+ConcreteSubject -> ConcreteObserver2 : update() : void
+activate ConcreteObserver2
+ConcreteObserver2 -> ConcreteSubject : getState() : subjectState
+deactivate ConcreteObserver2
+activate ConcreteSubject
+deactivate ConcreteSubject
+deactivate ConcreteSubject
 
 @enduml

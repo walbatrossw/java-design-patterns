@@ -22,6 +22,7 @@
 
 아래는 옵서버 패턴의 순차 다이어그램이다.
 
+![observer-pattern-sequence](http://www.plantuml.com/plantuml/png/hPAz3i8W58LtdeAn7Jh8Q8oB3-3G9-3dLZ4H6hWq-lQscce350STB-VoSSu9Pws0TjQYi3V20reJhW8SwRb3BNNF3TA3DT81GXl41IHcjQFmu0PmcwBAICIYkoP5q2trW2roXCg_zfx3UDukndgS1wiLuHBrCEcnqVYnPX-lZ0XZKNVt-N5V_OHTPWYzcXAyUGfMYOdmgJCbPrESviBggANr60K_6IbrL8ZFCl5NYOoarxzdN7wCab_shm9cwG40)
 
 
 ## 2. 옵서버 패턴 예제 : 성적 출력 기능
