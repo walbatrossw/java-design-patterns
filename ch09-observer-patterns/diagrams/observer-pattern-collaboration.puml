@@ -1,0 +1,30 @@
+@startuml
+
+title Observer Pattern Collaboration
+
+class Subject {
+    + attach(observer : Observer) : void
+    + detach(observer : Observer) : void
+    + notifyObservers() : void
+}
+
+interface Observer {
+    + update() : void
+}
+
+class ConcreteSubject {
+    - subjectState : SubjectState
+    + setState(subjectState : SubjectState) : void
+    + getState() : SubjectState
+}
+
+class ConcreteObserver {
+    + update() : void
+}
+
+Subject <|-- ConcreteSubject
+Subject -> Observer :  -observers *
+ConcreteSubject <- ConcreteObserver : -concreteSubject
+Observer <|.. ConcreteObserver
+
+@enduml
