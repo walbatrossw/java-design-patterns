@@ -1,0 +1,39 @@
+@startuml
+
+class Subject {
+    + attach(observer : Observer) : void
+    + detach(observer : Observer) : void
+    + notifyObserver() : void
+}
+
+
+
+class ScoreRecord {
+    + addScore(score : int) : void
+    + getScoreRecord() : List<Integer>
+}
+
+class DataSheetView {
+    - viewCount : int
+    + dataSheetView(scoreRecord : ScoreRecord)
+    - displayScores(record : List<Integer>, viewCount : int) : void
+}
+
+class MinMaxView {
+    + MinMaxView(scoreRecord : ScoreRecord)
+    + update() : void
+    + displayMinMax(record : List<Integer>) : void
+}
+
+interface Observer {
+    + update() : void
+}
+
+Subject <|-- ScoreRecord
+Subject -> Observer : - observers *
+DataSheetView --> ScoreRecord : - scoreRecord
+MinMaxView --> ScoreRecord : - scoreRecord
+Observer <|.. DataSheetView
+Observer <|.. MinMaxView
+
+@enduml

@@ -1,8 +1,9 @@
-package practice.before;
+package practice.enhanced;
 
 import java.util.List;
 
-public class DataSheetView {
+// 통보대상
+public class DataSheetView implements Observer {
 
     private ScoreRecord scoreRecord;    // 점수 저장 클래스 참조변수
     private int viewCount;              // 저장된 점수의 갯수
@@ -14,6 +15,7 @@ public class DataSheetView {
     }
 
     // 점수의 변경을 통보받아 갱신하는 메서드
+    @Override
     public void update() {
         List<Integer> record = scoreRecord.getScoreRecord(); // 점수 조회
         displayScores(record, viewCount);
