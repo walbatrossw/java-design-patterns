@@ -1,4 +1,4 @@
-package practice.before;
+package practice.after.minmax;
 
 import java.util.List;
 
