@@ -1,0 +1,19 @@
+@startuml
+
+class ScoreRecord {
+    - scores : List<Integer>
+    + setDataSheetView(dataSheetView : DataSheetView)
+    + addScore(score : int) : void
+    + getScoreRecord() : List<Integer>
+}
+
+class DataSheetView {
+    - viewCount : int
+    + DataSheetView(scoreRecord : ScoreRecord, viewCount : int)
+    + update() : void
+}
+
+ScoreRecord - DataSheetView : - scoreRecord
+DataSheetView - ScoreRecord : - dataSheetView
+
+@enduml
