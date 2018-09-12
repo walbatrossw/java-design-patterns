@@ -4,7 +4,6 @@ import java.util.List;
 
 public class DataSheetView {
 
-
     private ScoreRecord scoreRecord;    // 점수 저장 클래스 참조변수
     private int viewCount;              // 저장된 점수의 갯수
 

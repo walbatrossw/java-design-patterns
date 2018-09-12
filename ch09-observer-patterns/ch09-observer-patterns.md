@@ -255,4 +255,424 @@ Min : 10, Max : 50
 
 이제 두번째 변경된 요구사항에 대해서 알아보자. 성적이 입력되었을 때 최대 3개 목록, 최대 5개의 목록, 최소/최대 값을 동시에 출력하거나 처음에는 목록으로 출력하고, 나중에는 최소/최대 값을 출력하려면 어떻게 해야할지 알아보자.
 
+목록을 출력하는 것은 `DataSheetView` 클래스를 활용하고, 최소/최대 값을 출력하는 것은 `MinMaxView` 클래스를 활용할 수 있다. 그래서 `ScoreRecord` 클래스는 2개의 `DataSheetView` 객체(3개, 5개의 목록)와 1개의 `MinMaxView` 객체에게
+성적 추가를 통보할 필요가 있다. 이를 위해 `ScoreRecord` 클래스는 다시 변경되어야한다.
+
+아래의 코드는 위의 설명을 반영한 내용으로 작성되었다.
+
+```java
+public class ScoreRecord {
+
+    private List<Integer> scores = new ArrayList<>();                   // 점수 저장
+    private List<DataSheetView> dataSheetViews = new ArrayList<>();     // 목록 형태로 점수 출력 리스트 참조변수
+    private MinMaxView minMaxView;                                      // 최소/최대값 출력 참조변수
+
+    public void addDataSheetView(DataSheetView dataSheetView) {
+        dataSheetViews.add(dataSheetView);
+    }
+
+    // MinMaxView 설정 추가
+    public void setMinMaxView(MinMaxView minMaxView) {
+        this.minMaxView = minMaxView;
+    }
+
+    // 새로운 점수 추가
+    public void addScore(int score) {
+        scores.add(score);  // scores 목록에 주어진 점수를 추가
+        // 각 dataSheetView에 값의 변경을 통보
+        for (DataSheetView dataSheetView : dataSheetViews) {
+            dataSheetView.update();
+        }
+        minMaxView.update();    // MinMaxView에 값의 변경 통보 변경
+    }
+
+    // 점수 목록 가져오기
+    public List<Integer> getScoreRecord() {
+        return scores;
+    }
+
+}
+```
+
+```java
+public class MinMaxView {
+
+    private ScoreRecord scoreRecord;
+
+    public MinMaxView(ScoreRecord scoreRecord) {
+        this.scoreRecord = scoreRecord;
+    }
+
+    public void update() {
+        List<Integer> record = scoreRecord.getScoreRecord();
+        displayMinMax(record);
+    }
+
+    private void displayMinMax(List<Integer> record) {
+        int min = Collections.min(record, null);
+        int max = Collections.max(record, null);
+        System.out.println("Min : " + min + ", Max : " + max);
+        System.out.println();
+        System.out.println("===============================");
+    }
+}
+```
+
+```java
+public class DataSheetView {
+    
+    private ScoreRecord scoreRecord;    // 점수 저장 클래스 참조변수
+    private int viewCount;              // 저장된 점수의 갯수
+
+    // 생성자
+    public DataSheetView(ScoreRecord scoreRecord, int viewCount) {
+        this.scoreRecord = scoreRecord;
+        this.viewCount = viewCount;
+    }
+
+    // 점수의 변경을 통보받아 갱신하는 메서드
+    public void update() {
+        List<Integer> record = scoreRecord.getScoreRecord(); // 점수 조회
+        displayScores(record, viewCount);
+    }
+
+    // 점수 출력 메서드
+    private void displayScores(List<Integer> record, int viewCount) {
+        System.out.println("List of " + viewCount + " entries ");
+        for (int i = 0; i < viewCount &&  i < record.size(); i++) {
+            System.out.println(record.get(i));
+        }
+        System.out.println();
+    }
+
+}
+```
+
+```java
+public class Client {
+    public static void main(String[] args) {
+
+        ScoreRecord scoreRecord = new ScoreRecord();    // 점수 저장 객체 생성
+
+        DataSheetView dataSheetView3 = new DataSheetView(scoreRecord, 3);
+
+        DataSheetView dataSheetView5 = new DataSheetView(scoreRecord, 5);
+        MinMaxView minMaxView = new MinMaxView(scoreRecord);
+
+        scoreRecord.addDataSheetView(dataSheetView3);
+        scoreRecord.addDataSheetView(dataSheetView5);
+        scoreRecord.setMinMaxView(minMaxView);
+
+        for (int i = 1; i <= 5; i++) {
+            int score = i * 10;
+            System.out.println("adding " + score);
+            scoreRecord.addScore(score);
+        }
+    }
+}
+```
+
+```
+adding 10
+List of 3 entries 
+10
+
+List of 5 entries 
+10
+
+Min : 10, Max : 10
+
+===============================
+adding 20
+List of 3 entries 
+10
+20
+
+List of 5 entries 
+10
+20
+
+Min : 10, Max : 20
+
+===============================
+adding 30
+List of 3 entries 
+10
+20
+30
+
+List of 5 entries 
+10
+20
+30
+
+Min : 10, Max : 30
+
+===============================
+adding 40
+List of 3 entries 
+10
+20
+30
+
+List of 5 entries 
+10
+20
+30
+40
+
+Min : 10, Max : 40
+
+===============================
+adding 50
+List of 3 entries 
+10
+20
+30
+
+List of 5 entries 
+10
+20
+30
+40
+50
+
+Min : 10, Max : 50
+
+===============================
+```
+
+일단은 요구사항의 변경에 따라 코드를 변경하여 원하는 결과를 얻을 수 있었다. 하지만 성적의 통보 대상이 변경된 것을 반영하려고 `ScoreRecord` 클래스의 코드를 수정하게 됨에 따라 이것도 역시 OCP를 위배하게 되었다.
+이러한 문제를 옵서버 패턴을 통해 해결하기 위한 해결책을 아래에서 알아보자.
+
 #### 2.3 해결책
+
+문제 해결의 핵심은 성적 통보 대상이 변경되더라도 `ScoreRecord` 클래스를 그대로 재사용할 수 있어야한다는 점이다. 따라서 `ScoreRecord` 클래스에서 변화되는 부분을 식별하고 일반화시켜야 한다.
+
+`ScoreRecord` 클래스에서는 통보 대상인 객체를 참조하는 것을 관리해야하며 `addScore()`메서드는 통보 대상인 객체의 `update()` 메서드를 호출할 필요가 있다. 이런 통보 대상 객체의 관리와 각 겍체에 `update()`메서드를 호출하는 기능은
+성적 변경뿐만 아니라 임의의 데이터가 변경되었을 때 이에 관심을 가지는 모든 대상 객체에 통보하는 경우에도 동일하게 발생하는 기능이다. 따라서 이러한 공통 기능을 상위 클래스 및 인터페이스로 일반화하고, 이를 활용해 `ScoreRecord`를 구현하는
+방식으로 설계를 변경하는 편이 좋다.
+
+아래는 `DataSheetView`와 `MinMaxView` 클래스에게 성적 변경을 통보할 수 있도록 개선한 `ScoreRecord` 클래스 다이어그램과 이에 대한 설명이다.
+
+![observer-pattern-enhanced-score-class-diagram](http://www.plantuml.com/plantuml/png/ZP91RiCW44NtFWLBfouvW6Lbqsug9QfKIzqJc2HK4OvWx2HgUlTE3DZOKfMoG3Rp-V_188_2ELQtso-GoBupHgDW0b78Gzvi7TWEB2lPU_XSq7VNQ1M42lufD0tgtJKMyw7waz6G7a8s5Zw0PZM2ADKlv-u-qoPjSEQy1qnszivhxR1wCmXxiAjxX0zu5IZg0m1-QZY72Cuw-dbfMeFUFHuirVhqW5Qce8jWehGx7SMrhxZSHkK4v7aUbLw29znein6N1Az8bXvH5Amz4JRaynvvDc_q1rkAGcHWTqB2qCi1PXv0wlXqgXldATDGuAlHfwIhYc_5iQTisX5EqdfoHiwICsV9xJoI3edLRRcSDdvM6qspNm00)
+
+- `Subject`클래스는 성적변경에 관심이 있는 대상 객체를 관리하는 기능을 수행한다.
+- `Subject`클래스는 `attach()`, `detach()`메서드로 성적 변경에 관심이 있는 대상 객체를 추가하거나, 제거한다.
+- 성적변경의 통보 수신이라는 측면에서 `DataSheetView`, `MinMaxView`클래스는 동일하므로 `Subject`클래스는 `Observer` 인터페이스를 구현함으로써 성적 변경에 관심이 있음을 보여준다.
+- `ScoreRecord`클래스의 `addScore()`메서드가 호출되면 자신의 성적 값을 저장한 후 `Subject`클래스의 `notifyObservers()`메서드를 호출해 `DataSheetView`, `MinMaxView`클래스에게 성적 변경을 통보한다.
+- 이후 `Subject`클래스는 `Observer`인터페이스를 통해 `DataSheetView`, `MinMaxView` 객체의 `update()`메서드를 호출하게 된다.
+
+아래의 코드는 위와 같은 방식으로 설계한 내용이다.
+
+```java
+// 추상화된 통보대상
+public interface Observer {
+
+    // 데이터의 변경을 통보했을 때 처리하는 메서드
+    public abstract void update();
+
+}
+```
+
+```java
+// 추상화된 변경 관심 데이터
+public abstract class Subject {
+
+    // 추상화된 통보 대상 목록
+    private List<Observer> observers = new ArrayList<>();
+
+    // 옵서버(통보 대상) 추가
+    public void attach(Observer observer) {
+        observers.add(observer);
+    }
+
+    // 옵서버(통보 대상) 제거
+    public void detach(Observer observer) {
+        observers.remove(observer);
+    }
+
+    // 통보대상 목록에서 각 옵서버에게 변경을 통보
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update();
+        }
+    }
+
+}
+```
+
+```java
+// 구체적인 변경 감시 대상 데이터
+public class ScoreRecord extends Subject {
+
+    private List<Integer> scores = new ArrayList<>();
+
+    // 점수 추가
+    public void addScore(int score) {
+        scores.add(score);
+        notifyObservers();  // 데이터의 변경을 각 옵서버에게 통지
+    }
+
+    public List<Integer> getScoreRecord() {
+        return scores;
+    }
+
+}
+```
+
+```java
+// 통보대상
+public class DataSheetView implements Observer {
+
+    private ScoreRecord scoreRecord;    // 점수 저장 클래스 참조변수
+    private int viewCount;              // 저장된 점수의 갯수
+
+    // 생성자
+    public DataSheetView(ScoreRecord scoreRecord, int viewCount) {
+        this.scoreRecord = scoreRecord;
+        this.viewCount = viewCount;
+    }
+
+    // 점수의 변경을 통보받아 갱신하는 메서드
+    @Override
+    public void update() {
+        List<Integer> record = scoreRecord.getScoreRecord(); // 점수 조회
+        displayScores(record, viewCount);
+    }
+
+    // 점수 출력 메서드
+    private void displayScores(List<Integer> record, int viewCount) {
+        System.out.println("List of " + viewCount + " entries ");
+        for (int i = 0; i < viewCount &&  i < record.size(); i++) {
+            System.out.println(record.get(i));
+        }
+        System.out.println();
+    }
+
+}
+```
+
+```java
+// 통보대상 클래스
+public class MinMaxView implements Observer {
+
+    private ScoreRecord scoreRecord;
+
+    public MinMaxView(ScoreRecord scoreRecord) {
+        this.scoreRecord = scoreRecord;
+    }
+
+    @Override
+    public void update() {
+        List<Integer> record = scoreRecord.getScoreRecord();
+        displayMinMax(record);
+    }
+
+    private void displayMinMax(List<Integer> record) {
+        int min = Collections.min(record, null);
+        int max = Collections.max(record, null);
+        System.out.println("Min : " + min + ", Max : " + max);
+        System.out.println();
+        System.out.println("==============================");
+    }
+
+}
+```
+
+```java
+public class Client {
+    public static void main(String[] args) {
+        ScoreRecord scoreRecord = new ScoreRecord();
+        DataSheetView dataSheetView3 = new DataSheetView(scoreRecord, 3);
+        DataSheetView dataSheetView5 = new DataSheetView(scoreRecord, 5);
+        MinMaxView minMaxView = new MinMaxView(scoreRecord);
+
+        scoreRecord.attach(dataSheetView3);
+
+        scoreRecord.attach(dataSheetView5);
+
+        scoreRecord.attach(minMaxView);
+
+        for (int i = 1 ; i <= 5 ; i ++ ) {
+            int score = i * 10 ;
+            System.out.println("adding " + score) ;
+            scoreRecord.addScore(score) ;
+        }
+    }
+}
+```
+
+```
+adding 10
+List of 3 entries 
+10
+
+List of 5 entries 
+10
+
+Min : 10, Max : 10
+
+==============================
+adding 20
+List of 3 entries 
+10
+20
+
+List of 5 entries 
+10
+20
+
+Min : 10, Max : 20
+
+==============================
+adding 30
+List of 3 entries 
+10
+20
+30
+
+List of 5 entries 
+10
+20
+30
+
+Min : 10, Max : 30
+
+==============================
+adding 40
+List of 3 entries 
+10
+20
+30
+
+List of 5 entries 
+10
+20
+30
+40
+
+Min : 10, Max : 40
+
+==============================
+adding 50
+List of 3 entries 
+10
+20
+30
+
+List of 5 entries 
+10
+20
+30
+40
+50
+
+Min : 10, Max : 50
+
+==============================
+```
+
+위와 같이 코드를 작성하게 되면 성적 변경에 관심이 있는 대상 객체들의 관리는 `Subject`클래스에서 구현하고 `ScoreRecord`클래스는 `Subject`클래스를 상속받게 함으로써 `ScoreRecord`클래스는 이제 `DataSheetView`와
+`MinMaxView`를 직접 참조할 필요가 없게 되었다. 그러므로 `ScoreRecord`클래스의 코드를 변경하지 않고도 새로운 관심 클래스 및 객체를 추가/제거하는 것이 가능해졌다.
+
