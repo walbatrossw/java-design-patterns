@@ -676,3 +676,133 @@ Min : 10, Max : 50
 위와 같이 코드를 작성하게 되면 성적 변경에 관심이 있는 대상 객체들의 관리는 `Subject`클래스에서 구현하고 `ScoreRecord`클래스는 `Subject`클래스를 상속받게 함으로써 `ScoreRecord`클래스는 이제 `DataSheetView`와
 `MinMaxView`를 직접 참조할 필요가 없게 되었다. 그러므로 `ScoreRecord`클래스의 코드를 변경하지 않고도 새로운 관심 클래스 및 객체를 추가/제거하는 것이 가능해졌다.
 
+이제 추가적으로 합계/평균을 출력하는 `StatisticsView`클래스를 작성하고, 새로운 관심 객체를 추가 시켜보자.
+
+```java
+public class StatisticsView implements Observer {
+
+    private ScoreRecord scoreRecord;
+
+    public StatisticsView(ScoreRecord scoreRecord) {
+        this.scoreRecord = scoreRecord;
+    }
+
+    @Override
+    public void update() {
+        List<Integer> record = scoreRecord.getScoreRecord();
+        displayStatistics(record);
+    }
+
+    private void displayStatistics(List<Integer> record) {
+
+        int sum = 0;
+        for (int score : record) {
+            sum += score;
+        }
+        float average = (float) sum / record.size();
+        System.out.println("sum " + sum + ", average " + average);
+
+    }
+}
+```
+
+```java
+public class Client {
+    public static void main(String[] args) {
+
+        ScoreRecord scoreRecord = new ScoreRecord();
+        DataSheetView dataSheetView3 = new DataSheetView(scoreRecord, 3);
+        scoreRecord.attach(dataSheetView3);
+        MinMaxView minMaxView = new MinMaxView(scoreRecord);
+        scoreRecord.attach(minMaxView);
+
+        for (int i = 1; i <= 5; i++) {
+            int score = i * 10;
+            System.out.println("adding " + score);
+            scoreRecord.addScore(score);
+        }
+
+        scoreRecord.detach(dataSheetView3);
+        StatisticsView statisticsView = new StatisticsView(scoreRecord);
+        scoreRecord.attach(statisticsView);
+
+        for (int i = 1; i <= 5; i++) {
+            int score = i * 10;
+            System.out.println("adding " + score);
+            scoreRecord.addScore(score);
+        }
+    }
+}
+```
+
+```
+adding 10
+List of 3 entries 
+10
+
+Min : 10, Max : 10
+
+==============================
+adding 20
+List of 3 entries 
+10
+20
+
+Min : 10, Max : 20
+
+==============================
+adding 30
+List of 3 entries 
+10
+20
+30
+
+Min : 10, Max : 30
+
+==============================
+adding 40
+List of 3 entries 
+10
+20
+30
+
+Min : 10, Max : 40
+
+==============================
+adding 50
+List of 3 entries 
+10
+20
+30
+
+Min : 10, Max : 50
+
+==============================
+adding 10
+Min : 10, Max : 50
+
+==============================
+sum 160, average 26.666666
+adding 20
+Min : 10, Max : 50
+
+==============================
+sum 180, average 25.714285
+adding 30
+Min : 10, Max : 50
+
+==============================
+sum 210, average 26.25
+adding 40
+Min : 10, Max : 50
+
+==============================
+sum 250, average 27.777779
+adding 50
+Min : 10, Max : 50
+
+==============================
+sum 300, average 30.0
+```
+
+이전 코드(`ScoreRecord`)를 수정하지 않고 클래스(`StatisticsView`) 하나만을 추가함으로써 합계/평균을 구할 수 있게 되었다.
