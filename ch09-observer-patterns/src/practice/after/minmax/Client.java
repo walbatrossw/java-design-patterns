@@ -13,6 +13,5 @@ public class Client {
             System.out.println("adding " + score);  // 점수추가
             scoreRecord.addScore(score);    // 저장된 점수목록 출력
         }
-
     }
 }

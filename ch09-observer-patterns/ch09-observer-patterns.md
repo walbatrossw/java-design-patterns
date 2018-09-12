@@ -159,4 +159,100 @@ List of 3 entries
 
 #### 2.2 성적출력기능의 문제점
 
+성적 출력 기능을 위와 같이 구현했지만 만약 기능이 추가되거나, 요구사항이 바뀐다면 어떻게 될까? 구체적인 변경사항이나 문제점에 대해 알아보자.
+
+- 성적을 다른형태로 출력하고 싶다면? 예를 들어서 성적을 목록형태가 아닌 최소/최대로 출력하려면?
+- 여러가지 형태의 성적을 동시 혹은 순차적으로 출력하려면? 예를 들어서 성적이 입력되었을 때 최대 3개, 5개, 최소/최대 값을 동시에 출력하거나 처음에는 목록으로 출력하고, 나중에는 최소/최대 값을 출력하려면?
+
+일단 먼저 성적을 다른 형태로 출력하는 경우에 대해 알아보자.
+
+점수 목록 출력대신 최소/최대 값만을 출력하려면 기존의 `DataSheetView`클래스 대신 `MinMaxView`클래스를 추가할 필요가 있다. 그리고 `ScoreRecord` 클래스는 `DataSheetView` 클래스가 아니라 `MinMaxView`
+클래스에 성적 변경을 통보할 필요가 있다.
+
+아래는 위에서 설명한 것과 같이 성적의 최소/최대 값을 출력하는 코드이다.
+
+```java
+public class ScoreRecord {
+
+    private List<Integer> scores = new ArrayList<>();   // 점수 저장
+    private MinMaxView minMaxView;  // MinMaxView 클래스 객체 참조 변수
+    
+    // MinMaxView 설정 추가
+    public void setMinMaxView(MinMaxView minMaxView) {
+        this.minMaxView = minMaxView;
+    }
+
+    // 새로운 점수 추가
+    public void addScore(int score) {
+        scores.add(score);  // scores 목록에 주어진 점수를 추가
+        //dataSheetView.update(); // scores 변경 통보
+        minMaxView.update();    // scores 변경 통보 변경
+    }
+
+    // 점수 목록 가져오기
+    public List<Integer> getScoreRecord() {
+        return scores;
+    }
+
+}
+```
+
+```java
+public class MinMaxView {
+
+    private ScoreRecord scoreRecord; // 점수 저장 객체 참조 변수
+
+    public MinMaxView(ScoreRecord scoreRecord) {
+        this.scoreRecord = scoreRecord;
+    }
+
+    public void update() {
+        List<Integer> record = scoreRecord.getScoreRecord(); // 점수 조회
+        displayMinMax(record);  // 최소 / 최대 값 출력
+    }
+
+    private void displayMinMax(List<Integer> record) {
+        int min = Collections.min(record, null);
+        int max = Collections.max(record, null);
+        System.out.println("Min : " + min + ", Max : " + max);
+    }
+}
+```
+
+```java
+public class Client {
+    public static void main(String[] args) {
+
+        ScoreRecord scoreRecord = new ScoreRecord();    // 점수 저장 객체 생성
+        MinMaxView minMaxView = new MinMaxView(scoreRecord);
+
+        scoreRecord.setMinMaxView(minMaxView);
+
+        for (int i = 1; i <= 5; i++) {
+            int score = i * 10;
+            System.out.println("adding " + score);  // 점수추가
+            scoreRecord.addScore(score);    // 저장된 점수목록 출력
+        }
+    }
+}
+```
+
+```
+adding 10
+Min : 10, Max : 10
+adding 20
+Min : 10, Max : 20
+adding 30
+Min : 10, Max : 30
+adding 40
+Min : 10, Max : 40
+adding 50
+Min : 10, Max : 50
+```
+
+코드는 원하던 결과대로 출력이 되었다. 하지만 이는 OCP법칙에 위반된다. 그 이유는 점수가 입력되었을 때 지정된 특정 대상 클래스(`DataSheetView`)에게 고정적으로 통보하도록 코드가 짜여있었는데 다른 대상 클래스(`MinMaxView`)에게 점수가 입력되었음을
+통보하려면 `ScoreRecord` 클래스의 변경이 불가피하기 때문이다.
+
+이제 두번째 변경된 요구사항에 대해서 알아보자. 성적이 입력되었을 때 최대 3개 목록, 최대 5개의 목록, 최소/최대 값을 동시에 출력하거나 처음에는 목록으로 출력하고, 나중에는 최소/최대 값을 출력하려면 어떻게 해야할지 알아보자.
+
 #### 2.3 해결책

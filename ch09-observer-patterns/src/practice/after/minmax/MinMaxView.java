@@ -19,6 +19,6 @@ public class MinMaxView {
     private void displayMinMax(List<Integer> record) {
         int min = Collections.min(record, null);
         int max = Collections.max(record, null);
-        System.out.println("Min : " + min + "Max : " + max);
+        System.out.println("Min : " + min + ", Max : " + max);
     }
 }
