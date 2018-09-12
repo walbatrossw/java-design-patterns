@@ -24,10 +24,138 @@
 
 ![observer-pattern-sequence](http://www.plantuml.com/plantuml/png/hPAz3i8W58LtdeAn7Jh8Q8oB3-3G9-3dLZ4H6hWq-lQscce350STB-VoSSu9Pws0TjQYi3V20reJhW8SwRb3BNNF3TA3DT81GXl41IHcjQFmu0PmcwBAICIYkoP5q2trW2roXCg_zfx3UDukndgS1wiLuHBrCEcnqVYnPX-lZ0XZKNVt-N5V_OHTPWYzcXAyUGfMYOdmgJCbPrESviBggANr60K_6IbrL8ZFCl5NYOoarxzdN7wCab_shm9cwG40)
 
+`ConcreteSubject`가 자신의 상태, 즉 데이터 변경을 통보하려면 `ConcreteObserver`가 미리 등록되어 있어야 하는데 위의 순차 다이어그램을 살펴보면 `ConcreteSubject`에 `ConcreteObserver1`과 `ConcreteObserver2`가 등록되어 있는 상태이다.
+1. 이때 `ConcreteObserver1` `ConcreteSubject`의 상태를 변경하면 `ConcreteSubject`는 등록된 모든 `ConcreteObserver`에게 자신이 변경되었음을 통보한다.
+2. 변경통보는 실제로 `ConcreteSubject`의 상위 클래스인 `Subject`클래스의 `notifyObservers()` 메서드를 호출해 이루어진다.
+3. 그러면 `notifyObservers()`메서드는 등록된 각 `ConcreteObserver`의 `update()`메서드를 호출한다.
+4. 마지막으로 통보받은 `ConcreteObserver1`과 `ConcreteObserver2`는 `ConcreteSubject`의 `getState()`메서드를 호출함으로써 변경된 상태나 데이터를 구한다.
 
 ## 2. 옵서버 패턴 예제 : 성적 출력 기능
 
+성적을 출력하는 기능을 구현하면서 옵서버 패턴을 이해해보자.
+
 #### 2.1 성적출력기능
+
+아래는 성적을 출력하는 기능을 구현하기 위해 필요한 클래스 다이어그램과 설명이다.
+
+![observer-pattern-score-class-diagram](http://www.plantuml.com/plantuml/png/PP2x3i8m34NtV8N7LD0Vg10BB4XCL6AF6gj4GWcgtJ8W_XqtVIWf6H8vru_ZspmD4THDwF26SbluA91J0er_11LS7V7XuXbRx8vHt04XdmsR-e78TuTlRTD8YZArcAkCjN6IZhqbotakv1c2itDAYvp0wE9l_bUf9Z9d4rRgGO9Jw3rFtUUkEIibsrRfxljj-GBUlsG_r2khGAIMbHkOQh5lqbMkbfdTOsvcdle1)
+
+- `ScoreRecord` 클래스는 입력된 점수를 저장하는 역할을 수행한다.
+- `DataSheetView` 클래스는 입력된 점수를 목록형태로 출력하는 역할을 수행한다.
+- `ScoreRecord` 클래스의 `addScore()`메서드가 실행될 때 성적을 출력하려면 `ScoreRecord`클래스는 `DataSheetView`클래스의 객체를 참조해야한다.
+
+아래의 그림은 `ScoreRecord`와 `DataSheetView` 클래스 사이의 상호작용을 순차다이어그램으로 표현한 것이다.
+
+![observer-pattern-score-sequence](http://www.plantuml.com/plantuml/png/ZP313e8m44Jl_OeUCP4VC8OBNamyIU9zeIjiWYqfMzI_jsBKLY3nqYRJpipRRKYXF1l3fRa9S6oqkvHeXUZ0CbNKWMQPjuIQ8wceZCKZ-bD5-WuOYWQHJuHN8LvEcQPPw90R2KgDGZAUNY3DAtyDXfGGK34Dm1ZLX07FmAZAMrsdl2Nvf2YSZVc6nwnnt9IuHWw4iUP0FM_tch56cyr3Bq1CotwdKTHtBTn7Kv_ODqLKkPQ3_vmRvrSSRt1Xne3cpuS7)
+
+- 점수가 추가되면, 즉 다시말해 `ScoreRecord`클래스의 `addScore()`메서드가 호출되면 `ScoreRecord`클래스는 자신의 필드인 `scores`객체에 점수를 추가한다.
+- 그리고 `DataSheetView`클래스의 `update()`메서드를 호출함으로써 성적을 출력하도록 요청한다.
+- `DataSheetView`클래스는 `ScoreRecord`클래스의 `getScoreRecord()`메서드를 호출해 출력할 점수를 구한다.
+- 이때 `DataSheetView`클래스의 `update()`메서드에서는 구한 점수 중에서 명시된 개수만큼 점수만 출력한다.
+
+위에서 설명한 것을 바탕으로 작성된 코드는 아래와 같다.
+
+```java
+public class ScoreRecord {
+
+    private List<Integer> scores = new ArrayList<>();   // 점수 저장
+    private DataSheetView dataSheetView;                // 목록 형태로 점수를 출력하는 클래스 참조 변수
+
+    public void setDataSheetView(DataSheetView dataSheetView) {
+        this.dataSheetView = dataSheetView;
+    }
+
+    // 새로운 점수 추가
+    public void addScore(int score) {
+        scores.add(score);  // scores 목록에 주어진 점수를 추가
+        dataSheetView.update(); // scores 변경 통보
+    }
+
+    // 점수 목록 가져오기
+    public List<Integer> getScoreRecord() {
+        return scores;
+    }
+
+}
+```
+
+```java
+public class DataSheetView {
+
+    private ScoreRecord scoreRecord;    // 점수 저장 클래스 참조변수
+    private int viewCount;              // 저장된 점수의 갯수
+
+    // 생성자
+    public DataSheetView(ScoreRecord scoreRecord, int viewCount) {
+        this.scoreRecord = scoreRecord;
+        this.viewCount = viewCount;
+    }
+
+    // 점수의 변경을 통보받아 갱신하는 메서드
+    public void update() {
+        List<Integer> record = scoreRecord.getScoreRecord(); // 점수 조회
+        displayScores(record, viewCount);
+    }
+
+    // 점수 출력 메서드
+    private void displayScores(List<Integer> record, int viewCount) {
+        System.out.println("List of " + viewCount + " entries ");
+        for (int i = 0; i < viewCount &&  i < record.size(); i++) {
+            System.out.println(record.get(i));
+        }
+        System.out.println();
+    }
+
+}
+```
+
+```java
+public class Client {
+    public static void main(String[] args) {
+
+        ScoreRecord scoreRecord = new ScoreRecord();    // 점수 저장 객체 생성
+        DataSheetView dataSheetView = new DataSheetView(scoreRecord, 3);    // 3개까지 점수만 출력
+
+        scoreRecord.setDataSheetView(dataSheetView);    // 점수 시트 설정
+
+        for (int i = 1; i <= 5; i++) {
+            int score = i * 10;
+            System.out.println("adding " + score);  // 점수추가
+            scoreRecord.addScore(score);    // 저장된 점수목록 출력
+        }
+
+    }
+}
+```
+
+```
+adding 10
+List of 3 entries 
+10
+
+adding 20
+List of 3 entries 
+10
+20
+
+adding 30
+List of 3 entries 
+10
+20
+30
+
+adding 40
+List of 3 entries 
+10
+20
+30
+
+adding 50
+List of 3 entries 
+10
+20
+30
+```
 
 #### 2.2 성적출력기능의 문제점
 

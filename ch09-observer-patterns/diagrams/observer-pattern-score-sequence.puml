@@ -15,6 +15,8 @@ deactivate ScoreRecord
 
 activate DataSheetView
 DataSheetView --> ScoreRecord : getScoreRecord() : List<Integer>
+activate ScoreRecord
+deactivate ScoreRecord
 DataSheetView --> DataSheetView : displayScores(record : List<Integer>, viewCount : int) : void
 activate DataSheetView
 deactivate DataSheetView
