@@ -18,9 +18,9 @@
 
 - [ch07-state-patterns : 스테이트 패턴](https://github.com/walbatrossw/java-design-patterns/blob/master/ch07-state-patterns/ch07-state-patterns.md)
 
-- [ch08-command-patterns : 커맨드 패턴]()
+- [ch08-command-patterns : 커맨드 패턴](https://github.com/walbatrossw/java-design-patterns/blob/master/ch08-command-patterns/ch08-command-patterns.md)
 
-- [ch09-observer-patterns : 옵저버 패턴]()
+- [ch09-observer-patterns : 옵저버 패턴](https://github.com/walbatrossw/java-design-patterns/blob/master/ch09-observer-patterns/ch09-observer-patterns.md)
 
 - [ch10-decorator-patterns : 데커레이터 패턴]()
 
