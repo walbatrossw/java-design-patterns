@@ -1,0 +1,30 @@
+@startuml
+
+class Component {
+    + operator()
+}
+
+class ConcreteComponent {
+    + operator()
+}
+
+class Decorator {
+    + operator()
+}
+
+class ConcreteDecoratorA {
+    + operator()
+    - addedBehavior()
+}
+
+class ConcreteDecoratorB {
+    + operator()
+    - addedBehavior()
+}
+
+Component --* Decorator : -component
+Component <|.. ConcreteComponent
+Component <|.. Decorator
+Decorator <|-- ConcreteDecoratorA
+Decorator <|-- ConcreteDecoratorB
+@enduml
