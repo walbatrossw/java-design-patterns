@@ -1,0 +1,14 @@
+@startuml
+
+class RoadDisplay {
+    + draw() : void
+}
+
+class RoadDisplayWithLane {
+    + draw() : void
+    - drawLane() : void
+}
+
+RoadDisplay <|-- RoadDisplayWithLane
+
+@enduml

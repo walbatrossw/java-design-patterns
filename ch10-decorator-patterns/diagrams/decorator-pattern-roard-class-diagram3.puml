@@ -1,0 +1,56 @@
+@startuml
+
+class RoadDisplay {
+    + draw() : void
+}
+
+class RoadDisplayWithLane {
+    + draw() : void
+    - drawLane() : void
+}
+
+class RoadDisplayWithTraffic {
+    + draw() : void
+    - drawTraffic() : void
+}
+
+class RoadDisplayWithCrossing {
+    + draw() : void
+    - drawCrossing() : void
+}
+
+class RoadDisplayWithLaneTraffic {
+    + draw() : void
+    - drawLane() : void
+    - drawTraffic() : void
+}
+
+class RoadDisplayWithLaneCrossing {
+    + draw() : void
+    - drawLane() : void
+    - drawCrossing() : void
+}
+
+class RoadDisplayWithTrafficCrossing {
+    + draw() : void
+    - drawTraffic() : void
+    - drawCrossing() : void
+}
+
+class RoadDisplayWithLaneTrafficCrossing {
+    + draw() : void
+    - drawLane() : void
+    - drawTraffic() : void
+    - drawCrossing() : void
+}
+
+RoadDisplay <|- RoadDisplayWithLane
+RoadDisplayWithTraffic -|> RoadDisplay
+RoadDisplay <|-- RoadDisplayWithCrossing
+RoadDisplay <|-- RoadDisplayWithLaneTraffic
+RoadDisplay <|--- RoadDisplayWithLaneCrossing
+RoadDisplay <|--- RoadDisplayWithTrafficCrossing
+RoadDisplay <|---- RoadDisplayWithLaneTrafficCrossing
+
+
+@enduml
