@@ -1,0 +1,41 @@
+@startuml
+
+title : Battery 클래스에 옵서버 패턴 적용
+
+class Subject {
+    + attach(observer : Observer) : void
+    + detach(observer : Observer) : void
+    + notifyObserver() : void
+}
+
+interface Observer {
+    + update() : void
+}
+
+class Battery {
+    - level : int = 100
+    + setDisplay(display : BatteryLevelDisplay) : void
+    + setWarning(warning : LowBatteryWarning) : void
+    + consume(amount : int) : void
+    + getLevel() : int
+}
+
+class BatteryLevelDisplay {
+    + BatteryLevelDisplay(battery : Battery)
+    + update() : void
+}
+
+class LowBatteryWarning {
+    - LOW_BATTERY : int = 30;
+    + LowBatteryWarning(battery : Battery)
+    + update() : void
+}
+
+Subject -> Observer : -observers
+Battery --|> Subject
+Battery "-battery" -- "-display" BatteryLevelDisplay
+Battery "-battery" -- "-warning" LowBatteryWarning
+Observer <|.. BatteryLevelDisplay
+Observer <|.. LowBatteryWarning
+
+@enduml

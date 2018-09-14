@@ -1,0 +1,25 @@
+@startuml
+
+class Battery {
+    - level : int = 100
+    + setDisplay(display : BatteryLevelDisplay) : void
+    + setWarning(warning : LowBatteryWarning) : void
+    + consume(amount : int) : void
+    + getLevel() : int
+}
+
+class BatteryLevelDisplay {
+    + BatteryLevelDisplay(battery : Battery)
+    + update() : void
+}
+
+class LowBatteryWarning {
+    - LOW_BATTERY : int = 30;
+    + LowBatteryWarning(battery : Battery)
+    + update() : void
+}
+
+Battery "-battery" -- "-display" BatteryLevelDisplay
+Battery "-battery" -- "-warning" LowBatteryWarning
+
+@enduml
