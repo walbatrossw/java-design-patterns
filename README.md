@@ -22,7 +22,7 @@
 
 - [ch09-observer-patterns : 옵저버 패턴](https://github.com/walbatrossw/java-design-patterns/blob/master/ch09-observer-patterns/ch09-observer-patterns.md)
 
-- [ch10-decorator-patterns : 데커레이터 패턴]()
+- [ch10-decorator-patterns : 데커레이터 패턴](https://github.com/walbatrossw/java-design-patterns/blob/master/ch10-decorator-patterns/ch10-decorator-patterns.md)
 
 - [ch11-template-method-patterns : 템플릿 메서드 패턴]()
 
