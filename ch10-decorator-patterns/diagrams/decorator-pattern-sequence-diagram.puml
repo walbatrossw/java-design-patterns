@@ -1,3 +1,29 @@
 @startuml
 
+title : 데커레이터 패턴의 순차 다이어그램
+hide footbox
+autonumber
+
+participant Client
+participant ConcreteDecoratorB
+participant ConcreteDecoratorA
+participant ConcreteComponent
+
+
+Client -> ConcreteDecoratorB : operation() : void
+activate ConcreteDecoratorB
+activate ConcreteDecoratorA
+ConcreteDecoratorB -> ConcreteDecoratorA : operation() : void
+ConcreteDecoratorA -> ConcreteComponent : operation() : void
+activate ConcreteComponent
+ConcreteDecoratorA -> ConcreteDecoratorA : addedBehavior() : void
+activate ConcreteDecoratorA
+deactivate ConcreteDecoratorA
+deactivate ConcreteComponent
+ConcreteDecoratorB -> ConcreteDecoratorB : addedBehavior() : void
+deactivate ConcreteDecoratorA
+activate ConcreteDecoratorB
+deactivate ConcreteDecoratorB
+deactivate ConcreteDecoratorB
+
 @enduml

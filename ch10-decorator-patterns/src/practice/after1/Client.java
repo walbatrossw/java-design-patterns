@@ -1,4 +1,4 @@
-package practice.before;
+package practice.after1;
 
 public class Client {
 
@@ -9,6 +9,9 @@ public class Client {
 
         RoadDisplay roadWithLane = new RoadDisplayWithLane();
         roadWithLane.draw();    // 기본도로 + 차선 표시
+
+        RoadDisplay roadWithTraffic = new RoadDisplayWithTraffic();
+        roadWithTraffic.draw(); // 기본도로 + 교통량 표시
 
     }
 

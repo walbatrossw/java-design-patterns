@@ -11,17 +11,37 @@
 
 아래는 데커레이터 패턴의 콜라보레이션과 역할이 수행하는 작업에 대한 설명이다.
 
-![]()
+![decorator-pattern-collaboration](http://www.plantuml.com/plantuml/png/bP0z3e9044RxESMK_cGvWDg87iE6m1X9SDV0QYDscbXeRo69XOMbYNJgYLZk86e4WXXrozatRx_zf2qTmWP6wwCwxwFTKWLXF3zYl3h4yr056rJNRHHSebFul5IB3O3f69w77J4S2KvSuXGmENKK8t8DATnA5MOPnKsN9Fr6TyaKZ-47YWj9w51V9fdDbr5xChRW2LHuDXMsoupt0KF3iiZIQM1CxFBigKJ_Iv8FwusJXNpG9lPuOQS905bDZDLoTJIGfV_DGIrVqzuhBWAf1Z9XosUifAMlX0vm0m00)
 
-- `Component` :
-- `ConcreteComponent` :
-- `Decorator` :
-- `ConcreteDecoratorA`, `ConcreteDecoratorB` :
+- `Component` : 기본 기능을 뜻하는 `ConcreteComponent`와 추가 기능을 뜻하는 `Decorator`의 공통 기능을 정의한다. 클라이언트는 `Component`를 통해 실제 객체를 사용
+- `ConcreteComponent` : 기본 기능을 구현하는 클래스
+- `Decorator` : 많은 수가 존재하는 구체적인 `Decorator`의 공통 기능을 제공
+- `ConcreteDecoratorA`, `ConcreteDecoratorB` : `Decorator`의 하위 클래스로 기본 기능에 추가되는 개별적인 기능을 뜻함
 
+아래는 데커레이터 패턴의 순차 다이어그램과 그에 대한 설명이다.
 
+![decorator-pattern-sequence-diagram](http://www.plantuml.com/plantuml/png/bP6nRi8m48RtUmgFPUWBC5HAw8kO-10dWI-oZgWFm83KiY86G0mC6JD4QgM-KUEyGrCXGP4SbswsFz___tSd93DKGzMiA_zvQeuhlw_RPQNQjx9Trdw_LNwryrMfcjTJX_oc_dh_Q0ubJCcWcZ3Bc5z0BuJjOZv61v1h9vHHhgseqOpGokqJsyoXu3DcxBImI-Cu2U8HptEsFze0PnFr-1JGxZhZ7BipiNqOTBU2oO3EX0ej60hJpn88w8TSax1huD-lwaj7TqQ-JY2kUvDA6uCcnQakYDqzyqZ0u3zf95ZQkwIUO77ps1fZbN_HRm00)
 
+`ConcreteComponent`가 정의 되있고, `ConcreteDecoratorA`의 객체와 이에 대한 데커레이터로 `ConcreteDecoratorB`의 객체가 있다고 가정해보자. 즉, 다음과 같이 객체가 생성된 경우이다.
+
+```java
+Component c = new ConcreteComponent();
+Component a = new ConcreteComponentA(c);
+Component b = new ConcreteComponentB(a);
+```
+
+1. `Client`가 객체 `b`의 `operation()` 메서드를 호출하면 객체 `b`가 가리키는 `Component`, 즉 `ConcreteDecoratorA` 객체 `a`의 `operation()` 메서드를 호출한다.
+2. 객체 `a` 역시 자신이 가리키는 `Component`, 즉 `ConcreteComponent` 객체 `c`의 `operation()` 메서드를 호출한 후 자신의 `addedBehavior()` 메서드를 호출한다.
+3. 객체 `b` 역시 객체 `a`의 `operation()` 메서드를 호출한 후 자신의 `addedBehavior()` 메서드를 호출한다.
+
+이와 같은 순서는 `addedBehavior()`메서드가 자신의 `Component` 동작 후에 호출되는 경우를 보여주는데 데커레이터 패턴에서는 자신의 `addedBehavior()` 메서드를 먼저 호출한 후 `Component`의 `operation()`메서드를 호출하는 방식으로
+구현할 수 있다.
+
+이렇게 설명한 것으로는 감이 오지 않기 때문에 아래의 예제를 통해 데커레이터 패턴을 왜, 어떻게 적용하는지 알아보자.
 
 ## 2. 데커레이터 패턴 예제 : 도로 표시 방법 조합하기
+
+
 
 ### 2.1 도로표시 방법 구현
 
