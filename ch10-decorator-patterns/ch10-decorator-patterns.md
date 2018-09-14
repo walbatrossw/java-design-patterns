@@ -145,3 +145,109 @@ public class RoadDisplayWithTraffic extends RoadDisplay {
 
 
 ### 2.3 데커레이터 패턴을 통한 해결책
+
+앞에서 상속을 이용한 기능 추가 방법을 소개했는데 이 방법은 추가되는 기능의 조합별로 하위 클래스를 구현해야하는 문제가 발생한다. 이렇게 조합 수가 늘어나는 문제를 해결할 수 있는 설계를 하려면 각 추가 기능별로 개별 클래스를 설계하고 기능을 조합할
+때 각 클래스의 객체 조합을 이용하면 된다.
+
+아래의 클래스 다이어그램은 기본 기능인 `RoadDisplay` 클래스에 차선을 표시하는 기능을 추가하기 위한 `LaneDecorator` 클래스와 교통량을 표시하는 기능을 추가하기 위한 `TrafficDecorator` 클래스를 이용한 설계이다.
+
+![decorator-pattern-road-class-diagram3](http://www.plantuml.com/plantuml/png/Iyv9B2vMSCaiBiX9h5Ievb800cs5bAB4SWrD1Ik5ilpC5AvQBgvaiBAW_CGK8fL2bRca9kSN9PRa5y7Leqjef41OgN2JhM1gDF5RuPEObuffFeeeoOOZn43cOB4qf2WnBIqp6TDUT0aAh8OQXM8xp12R6brTv7X0bK0FNBYihguMPfHOAUYYEv8BGn7ON9H0nQ46FG2uk000)
+
+기본 기능만을 이용할 때는 `RoadDisplay` 클래스의 객체를 생성하면 충분하지만 차선을 표시하는 기능을 추가적으로 필요하다면 `LaneDecorator`클래스의 객체가 필요하다. 이때 `LaneDecorator`에서는 차선표시 기능만 직접 제공하고 도로 표시 기능은
+`RoadDisplay` 클래스의 `draw()`메서드를 호출하는 방식으로 구현한다.
+
+`LaneDecorator` 클래스는 `RoadDisplay` 객체에 대한 참조가 필요한데, 이는 `LaneDecorator` 클래스의 상위 클래스인 `DisplayDecorator` 클래스에서 `Display` 클래스로의 컴포지션 관계를 통해 표현되고 있다.
+
+위와 같은 방식으로 설계한 코드는 아래와 같다.
+
+```java
+public abstract class Display {
+
+    public abstract void draw();
+
+}
+```
+
+```java
+public class RoadDisplay extends Display {
+
+    @Override
+    public void draw() {
+        System.out.println("기본도로 표시");
+    }
+
+}
+```
+
+```java
+public abstract class DisplayDecorator extends Display {
+
+    private Display decoratedDisplay;
+
+    public DisplayDecorator(Display decoratedDisplay) {
+        this.decoratedDisplay = decoratedDisplay;
+    }
+
+    @Override
+    public void draw() {
+        decoratedDisplay.draw();
+    }
+
+}
+```
+
+```java
+public class LaneDecorator extends DisplayDecorator {
+
+    public LaneDecorator(Display decoratedDisplay) {
+        super(decoratedDisplay);
+    }
+
+    @Override
+    public void draw() {
+        super.draw();
+        drawLane();
+    }
+
+    private void drawLane() {
+        System.out.println("\t차선 표시");
+    }
+
+}
+```
+
+```java
+public class TrafficDecorator extends DisplayDecorator {
+
+    public TrafficDecorator(Display decoratedDisplay) {
+        super(decoratedDisplay);
+    }
+
+    @Override
+    public void draw() {
+        super.draw();
+        drawTraffic();
+    }
+
+    private void drawTraffic() {
+        System.out.println("\t교통량 표시");
+    }
+
+}
+```
+
+```java
+public class Client {
+    public static void main(String[] args) {
+        Display road = new RoadDisplay();
+        road.draw(); // 기본도로 표시
+
+        Display roadWithLane = new LaneDecorator(new RoadDisplay());
+        roadWithLane.draw(); // 기본도로 + 차선 표시
+
+        Display roadWithTraffic = new TrafficDecorator(new RoadDisplay());
+        roadWithTraffic.draw(); // 기본 도로 + 교통량 표시
+    }
+}
+```
+
