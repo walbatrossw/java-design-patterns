@@ -1,35 +1,56 @@
 @startuml
 
-abstract class Display {
-    + draw() : void
-}
-
 class RoadDisplay {
     + draw() : void
 }
 
-class DisplayDecorator {
-    + DisplayDecorator(decoratedDisplay : Display)
+class RoadDisplayWithLane {
     + draw() : void
+    - drawLane() : void
 }
 
-class LaneDecorator {
-    + LaneDecorator(decoratedDisplay : Display)
+class RoadDisplayWithTraffic {
     + draw() : void
-    + drawLane() : void
+    - drawTraffic() : void
 }
 
-class TrafficDecorator {
-    + TrafficDecorator(decoratedDisplay : Display)
+class RoadDisplayWithCrossing {
     + draw() : void
-    + drawTraffic() : void
+    - drawCrossing() : void
 }
 
-Display <|-- RoadDisplay
-Display <|-- DisplayDecorator
-Display --* DisplayDecorator : -decoratedDisplay
-DisplayDecorator <|-- LaneDecorator
-DisplayDecorator <|-- TrafficDecorator
+class RoadDisplayWithLaneTraffic {
+    + draw() : void
+    - drawLane() : void
+    - drawTraffic() : void
+}
+
+class RoadDisplayWithLaneCrossing {
+    + draw() : void
+    - drawLane() : void
+    - drawCrossing() : void
+}
+
+class RoadDisplayWithTrafficCrossing {
+    + draw() : void
+    - drawTraffic() : void
+    - drawCrossing() : void
+}
+
+class RoadDisplayWithLaneTrafficCrossing {
+    + draw() : void
+    - drawLane() : void
+    - drawTraffic() : void
+    - drawCrossing() : void
+}
+
+RoadDisplay <|- RoadDisplayWithLane
+RoadDisplayWithTraffic -|> RoadDisplay
+RoadDisplay <|-- RoadDisplayWithCrossing
+RoadDisplay <|-- RoadDisplayWithLaneTraffic
+RoadDisplay <|--- RoadDisplayWithLaneCrossing
+RoadDisplay <|--- RoadDisplayWithTrafficCrossing
+RoadDisplay <|---- RoadDisplayWithLaneTrafficCrossing
 
 
 @enduml

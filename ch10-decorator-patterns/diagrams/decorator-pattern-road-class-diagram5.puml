@@ -1,0 +1,41 @@
+@startuml
+
+abstract class Display {
+    + draw() : void
+}
+
+class RoadDisplay {
+    + draw() : void
+}
+
+class DisplayDecorator {
+    + DisplayDecorator(decoratedDisplay : Display)
+    + draw() : void
+}
+
+class LaneDecorator {
+    + LaneDecorator(decoratedDisplay : Display)
+    + draw() : void
+    - drawLane() : void
+}
+
+class TrafficDecorator {
+    + TrafficDecorator(decoratedDisplay : Display)
+    + draw() : void
+    - drawTraffic() : void
+}
+
+class CrossingDecorator {
+    + CrossingDecorator(decoratedDisplay : Display)
+    + draw() : void
+    - drawCrossing() : void
+}
+
+Display <|-- RoadDisplay
+Display <|-- DisplayDecorator
+Display --* DisplayDecorator : -decoratedDisplay
+DisplayDecorator <|-- LaneDecorator
+DisplayDecorator <|-- TrafficDecorator
+DisplayDecorator <|-- CrossingDecorator
+
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+
+hide footbox
+autonumber
+
+participant Client
+participant LaneDecorator
+participant DisplayDecorator
+participant RoadDisplay
+
+Client -> LaneDecorator : draw() : void
+activate LaneDecorator
+LaneDecorator -> DisplayDecorator : draw() : void
+activate DisplayDecorator
+DisplayDecorator -> RoadDisplay : draw() : void
+activate RoadDisplay
+deactivate RoadDisplay
+deactivate DisplayDecorator
+LaneDecorator -> LaneDecorator : drawLane() : void
+activate LaneDecorator
+deactivate DisplayDecorator
+deactivate LaneDecorator
+
+@enduml

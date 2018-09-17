@@ -101,7 +101,7 @@ public class Client {
 - 또다른 도로 표시 기능을 추가로 구현하고 싶다면 어떻게 해야할까? 예를 들면 기본 도로 표시에 교통량을 표시하고 싶을 경우
 - 여러 가지 추가 기능을 조합해 제공하고 싶다면 어떻게 해야할까? 예를 들면 기본 도로 표시에 차선 표시 기능과 교통량 표시 기능을 함께 제공하고 싶을 경우
 
-#### 2.2.1 또다른 도로 표시기능이 추가로 구현한 경우
+#### 2.2.1 또 다른 도로 표시기능이 추가로 구현한 경우
 
 위의 코드와 같이 새로운 도로 표시기능(교통량 표시)을 추가하는 방법은 `RoadDisplayWithTraffic` 클래스에 `RoadDisplay` 클래스를 상속받아 정의할 수 있는데 아래는 `RoadDisplayWithTraffic` 클래스를 추가한 클래스 다이어그램과 다이어그램을 바탕으로 작성된 코드이다.
 
@@ -141,17 +141,17 @@ public class RoadDisplayWithTraffic extends RoadDisplay {
 
 위와 같이 상속을 통해 조합의 각 경우를 설계한다면 각 조합별로 하위 클래스를 아래의 클래스 다이어그램처럼 구현해야한다.
 
-![decorator-pattern-roard-class-diagram3](http://www.plantuml.com/plantuml/png/Iyv9B2vM2CfFJ779B2x8IQnKgEPI009jXPIYn78DJGKhXRByp1IkMYwkP7IbuPab6Jw9UQauj834TC5Y84M4ZGefIanBoqmcQ1fK7M43dOloYuipyz89cWXJI9ntYNKdgg_9S3_80ABzWCisulq6THVHDcBuWy80fTYhf3e8ETNRrEXYSneNZZIgMsE7acdGpTB5bHO9AaGA40orklXI267LQE6CgK6NYDZXuW80)
+![decorator-pattern-road-class-diagram3](http://www.plantuml.com/plantuml/png/Iyv9B2vM2CfFJ779B2x8IQnKgEPI009jXPIYn78DJGKhXRByp1IkMYwkP7IbuPab6Jw9UQauj834TC5Y84M4ZGefIanBoqmcQ1fK7M43dOloYuipyz89cWXJI9ntYNKdgg_9S3_80ABzWCisulq6THVHDcBuWy80fTYhf3e8ETNRrEXYSneNZZIgMsE7acdGpTB5bHO9AaGA40orklXI267LQE6CgK6NYDZXuW80)
 
 
 ### 2.3 데커레이터 패턴을 통한 해결책
 
-앞에서 상속을 이용한 기능 추가 방법을 소개했는데 이 방법은 추가되는 기능의 조합별로 하위 클래스를 구현해야하는 문제가 발생한다. 이렇게 조합 수가 늘어나는 문제를 해결할 수 있는 설계를 하려면 각 추가 기능별로 개별 클래스를 설계하고 기능을 조합할
-때 각 클래스의 객체 조합을 이용하면 된다.
+앞에서 상속을 이용한 기능 추가 방법을 소개했는데 이 방법은 추가되는 기능의 조합별로 하위 클래스를 구현해야하는 문제가 발생한다.
+이렇게 조합 수가 늘어나는 문제를 해결하려면 각 추가 기능별로 개별 클래스를 설계하고 기능을 조합할 때 각 클래스의 객체 조합을 이용하면 된다.
 
 아래의 클래스 다이어그램은 기본 기능인 `RoadDisplay` 클래스에 차선을 표시하는 기능을 추가하기 위한 `LaneDecorator` 클래스와 교통량을 표시하는 기능을 추가하기 위한 `TrafficDecorator` 클래스를 이용한 설계이다.
 
-![decorator-pattern-road-class-diagram3](http://www.plantuml.com/plantuml/png/Iyv9B2vMSCaiBiX9h5Ievb800cs5bAB4SWrD1Ik5ilpC5AvQBgvaiBAW_CGK8fL2bRca9kSN9PRa5y7Leqjef41OgN2JhM1gDF5RuPEObuffFeeeoOOZn43cOB4qf2WnBIqp6TDUT0aAh8OQXM8xp12R6brTv7X0bK0FNBYihguMPfHOAUYYEv8BGn7ON9H0nQ46FG2uk000)
+![decorator-pattern-road-class-diagram4](http://www.plantuml.com/plantuml/png/fP7F2W8X48VlynHpt2tc1QJZ7Zj5Bp2f2yAIeL94zUwr_oIreiYJpE_Z-yd8EnySou2oO--nCVxGyHalW8-pHENuLDKey6YDWXl0Y6qigo_H2Mkqj8w3TP7FWqgDDntDOcRgpnLhtklIdqn_blSp6cQzvqNfrd7R6bdsvi4VrPCgQPybgolHyp-aGRxSc18joYyHIFaZeO06RxBKDqo-080x)
 
 기본 기능만을 이용할 때는 `RoadDisplay` 클래스의 객체를 생성하면 충분하지만 차선을 표시하는 기능을 추가적으로 필요하다면 `LaneDecorator`클래스의 객체가 필요하다. 이때 `LaneDecorator`에서는 차선표시 기능만 직접 제공하고 도로 표시 기능은
 `RoadDisplay` 클래스의 `draw()`메서드를 호출하는 방식으로 구현한다.
@@ -161,6 +161,7 @@ public class RoadDisplayWithTraffic extends RoadDisplay {
 위와 같은 방식으로 설계한 코드는 아래와 같다.
 
 ```java
+// 출력, 표시 추상 클래스
 public abstract class Display {
 
     public abstract void draw();
@@ -169,6 +170,7 @@ public abstract class Display {
 ```
 
 ```java
+// 기본 도로 표시 클래스 : 출력 클래스 상속
 public class RoadDisplay extends Display {
 
     @Override
@@ -180,14 +182,17 @@ public class RoadDisplay extends Display {
 ```
 
 ```java
+// 다양한 추가 기능에 대한 공통 추상 클래스
 public abstract class DisplayDecorator extends Display {
 
-    private Display decoratedDisplay;
+    private Display decoratedDisplay;   // 출력 클래스 참조 변수
 
+    //생성자
     public DisplayDecorator(Display decoratedDisplay) {
         this.decoratedDisplay = decoratedDisplay;
     }
 
+    // 출력 메서드 오버라이드
     @Override
     public void draw() {
         decoratedDisplay.draw();
@@ -197,18 +202,22 @@ public abstract class DisplayDecorator extends Display {
 ```
 
 ```java
+// 차선 표시를 추가하는 클래스 : 다양한 추가 기능에 대한 공통 클래스 상속
 public class LaneDecorator extends DisplayDecorator {
 
+    // 생성자
     public LaneDecorator(Display decoratedDisplay) {
         super(decoratedDisplay);
     }
 
+    // 출력 메서드 오버라이드
     @Override
     public void draw() {
         super.draw();
         drawLane();
     }
 
+    // 차선 표시 메서드
     private void drawLane() {
         System.out.println("\t차선 표시");
     }
@@ -217,23 +226,28 @@ public class LaneDecorator extends DisplayDecorator {
 ```
 
 ```java
+// 교통량 표시를 추가하는 클래스 : 추가 기능에 대한 공통 클래스 상속
 public class TrafficDecorator extends DisplayDecorator {
 
+    // 생성자
     public TrafficDecorator(Display decoratedDisplay) {
         super(decoratedDisplay);
     }
 
+    // 출력 메서드 오버라이드
     @Override
     public void draw() {
         super.draw();
         drawTraffic();
     }
 
+    // 교통량 표시 메서드
     private void drawTraffic() {
         System.out.println("\t교통량 표시");
     }
 
 }
+
 ```
 
 ```java
@@ -251,3 +265,97 @@ public class Client {
 }
 ```
 
+```
+기본도로 표시
+기본도로 표시
+	차선 표시
+기본도로 표시
+	교통량 표시
+```
+
+원하는 결과대로 도로 표시 조합이 이루어졌다. 도로를 표시하는 기능만 필요하다면 `RoadDisplay` 객체만을 이용하면 되고, 차선 표시 기능까지 필요하다면 `RoadDisplay`, `LaneDecorator` 객체를 이용하면 된다.
+그리고 교통량 표시 기능이 필요하다면 `RoadDisplay`, `TrafficDecorator`객체를 함께 이용하면 된다.
+
+위의 `Client` 코드에서 주목해서 봐야할 점은 `road`, `roadWithLane`, `roadWithTraffic` 객체의 접근이 모두 `Display` 클래스를 통해 이루진다는 점이다. 기본도로, 차선, 교통량의 조합에 관계 없이 `Client`
+클래스는 동일한 `Display` 클래스만을 통해 일관성있는 방식으로 도로 정보를 표시할 수 있게 되었다.
+
+`roadWithLane` 객체에 `draw()` 메서드가 호출되면 먼저 `RoadDisplay` 객체의 `draw()` 메서드를 호출하고, `LaneDecorator` 객체의 `drawLane()` 메서드를 호출한다. 이 과정을 순차 다이어그램으로 나타내면 아래와 같다.
+
+![decorator-pattern-road-sequence-diagram](http://www.plantuml.com/plantuml/png/XP0n3i8m34Ltdo8Z35o0WQKTcRY1cnXXgSHHS0lSdg0o94rBj-Z__FTjtzYHkOfe9o_0GSKFzuuYGC2eR3cWLzFqJ5uBwOoUMh8IKIKMJikFqEDxsRm8kjy7W0bh3gUIPex6HNpkzkan2Zj0gpoYqgoq32NAl7aTLCrOHHCkctMTb2_aQ4kkUgiTbYxnrJQlyQybyyhG1m00)
+
+`roadWithLane` 객체의 `draw()` 메서드는 먼저 `RoadDisplay` 클래스의 `draw()` 메서드를 호출해야 한다. 이는 `LaneDecorator` 클래스의 상위 클래스인 `DisplayDecorator` 클래스의 `draw()` 메서드를 호출해
+`DisplayDecorator` 클래스를 가리키는 `decoratedDisplay` 객체를 호출함으로써 실행된다. 그런 다음 `LaneDecorator` 클래스의 `drawLane()` 메서드를 호출하면 추가 기능인 차선을 표시할 수 있게 된다.
+
+이러한 방식의 설계를 이용하면 추가 기능 조합별로 별도의 클래스를 구현하는 대신 추가 기능에 해당하는 클래스의 객체를 조합해 추가 기능의 조합을 구현할 수 있게 된다. 예를 들어 기본 도로 표시 기능에 차선, 교통량도 함께
+표시하고 싶다면 코드를 아래와 같이 작성하면 된다.
+
+```java
+public class Client2 {
+    public static void main(String[] args) {
+        Display roadWithLaneAndTraffic = new TrafficDecorator(new LaneDecorator(new RoadDisplay()));
+        roadWithLaneAndTraffic.draw();
+    }
+}
+```
+```
+기본도로 표시
+	차선 표시
+	교통량 표시
+```
+
+`RoadDisplay` 클래스의 생성자를 기본으로 두고, `LaneDecorator` 클래스와 `TrafficDecorator` 클래스의 생성자를 사용하도록 하면 위와 같이 원하는 결과를 출력할 수 있다.
+
+이러한 설계는 추가 기능의 수가 많을수록 효과가 크다. 예를 들어 교차로를 표시하는 추가 기능을 지원하면서 기존의 다른 추가 기능과의 조합을 지원하려면 아래의 클래스 다이어그램처럼 `CrossingDecorator` 클래스를 추가하기만 하면된다.
+
+![decorator-pattern-road-class-diagram5](http://www.plantuml.com/plantuml/png/fP9D2i8m44RtESKiMoKN2ExiqfLuWJ599L0QIOeYwjsrVy5aMb7QLPdlyRwG2Hvzur0s82lq7WhZpnNUuCxW_Qr1ERncEGYuMAFOax4UsrjKFw83LcXf7JRM1JuDCjN_wM0M8vD_hzXXhQa_clujRsUycxMUYTA3mx8qalQcmOBgGJNHldNMUrEVQ3r95lIFhkW0esNpuFpp8SH1kjsGShwYRq80Jq_92DHvewtECEa6PZ1oK-m5)
+
+위의 클래스 다이어그램처럼 `CrossingDecorator` 클래스의 코드를 작성하면 아래와 같다.
+
+```java
+public class CrossingDecorator extends DisplayDecorator {
+    
+    // 기존의 도로 표시 클래스 설정
+    public CrossingDecorator(Display decoratedDisplay) {
+        super(decoratedDisplay);
+    }
+
+    @Override
+    public void draw() {
+        super.draw();   // 설정된 기존의 표시 기능을 실행
+        drawCrossing(); // 추가적으로 교차로를 표시
+    }
+
+    private void drawCrossing() {
+        System.out.println("\t교차로 표시");
+    }
+    
+}
+```
+
+`draw()` 메서드가 호출되면 `drawCrossing()` 메서드를 호출해 교차로를 표시하기 전 상위 클래스, 즉 `DisplayDecorator` 클래스의 `draw()`메서드를 호출한다. 그러면 `decoratedDisplay` 객체가 가리키는
+`draw()` 메서드를 호출하게 된다.
+
+```java
+public class Client3 {
+    public static void main(String[] args) {
+        Display roadWithCrossingAndLaneAndTraffic = new LaneDecorator(new TrafficDecorator(new CrossingDecorator(new RoadDisplay())));
+        roadWithCrossingAndLaneAndTraffic.draw();
+    }
+}
+```
+
+기본도로, 교차로, 교통량, 차선을 차례로 표시하는 객체의 코드는 위와 같이 작성할 수 있고, 아래와 같이 원하는 결과를 출력할 수 있다.
+
+```
+기본도로 표시
+	교차로 표시
+	교통량 표시
+	차선 표시
+```
+
+위의 예제를 데커레이터 패턴에 적용하여 각 요소를 정리해보면 아래와 같다.
+
+- `Display` : Component
+- `RoadDisplay` : ConcreteComponent
+- `DisplayDecorator` : Decorator
+- `LaneDecorator`, `TrafficDecorator`, `CrossingDecorator` : ConcreteDecorator
