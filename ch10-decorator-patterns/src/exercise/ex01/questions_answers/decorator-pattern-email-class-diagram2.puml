@@ -1,0 +1,24 @@
+@startuml
+
+class BasicEmailContent {
+    - content : String
+    + BasicEmailContent(content : String)
+    + getContent() : String
+}
+
+class ExternalEmailContent {
+    + ExternalEmailContent(content : String)
+    + getContent() : String
+    - addDisclaimer(content : String) : String
+}
+
+class SecureEmailContent {
+    + SecureEmailContent(content : String)
+    + getContent() : String
+    - encrypt(content : String) : String
+}
+
+BasicEmailContent <|-- ExternalEmailContent
+BasicEmailContent <|-- SecureEmailContent
+
+@enduml

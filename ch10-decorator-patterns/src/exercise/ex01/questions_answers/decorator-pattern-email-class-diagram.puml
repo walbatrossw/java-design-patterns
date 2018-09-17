@@ -1,0 +1,36 @@
+@startuml
+
+abstract class EmailContent {
+    + getContent() : String
+}
+
+class BasicEmailContent {
+    - content : String
+    + BasicEmailContent(content : String)
+    + getContent() : String
+}
+
+class ContentDecorator {
+    + ContentDecorator(decoratedContent : EmailContent)
+    + getContent() : String
+}
+
+class ExternalDecorator {
+    + ExternalDecorator(decoratedContent : EmailContent)
+    + getContent() : String
+    - addDisclaimer(content : String) : String
+}
+
+class SecureDecorator {
+    + SecureDecorator(decoratedContent : EmailContent)
+    + getContent() : String
+    - encrypt(content : String) : String
+}
+
+EmailContent <|-- BasicEmailContent
+EmailContent <|-- ContentDecorator
+EmailContent --* ContentDecorator : decoratedContent
+ContentDecorator <|-- ExternalDecorator
+ContentDecorator <|-- SecureDecorator
+
+@enduml
