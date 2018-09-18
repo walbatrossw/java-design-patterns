@@ -1,0 +1,62 @@
+@startuml
+
+abstract class CarComponent {
+    + getPrice() : int
+    + getCarInfo() : String
+}
+
+class BasicCar {
+    - price : int
+    + BasicCar(price : int)
+    + getPrice() : int
+    + getCarInfo() : String
+}
+
+class CarOptionDecorator {
+    + CarOptionDecorator(decoratedCar : CarComponent)
+    + getPrice() : int
+    + getCarInfo() : String
+}
+
+class AirBagDecorator {
+    - airBagPrice : int
+    + AirBagDecorator(decoratedCar : CarComponent, airBagPrice : int)
+    + getPrice() : int
+    + getAirBagPrice() : int
+    + getCarInfo() : String
+}
+
+class ESCDecorator {
+    - escPrice : int
+    + ESCDecorator(decoratedCar : CarComponent, escPrice : int)
+    + getPrice() : int
+    + getESCPrice() : int
+    + getCarInfo() : String
+}
+
+class SCCDecorator {
+    - sccPrice : int
+    + SSCDecorator(decoratedCar : CarComponent, sscPrice : int)
+    + getPrice() : int
+    + getSSCPrice() : int
+    + getCarInfo() : String
+}
+
+class NaviDecorator {
+    - naviPrice : int
+    + NaviDecorator(decoratedCar : CarComponent, naviPrice : int)
+    + getPrice() : int
+    + getNaviPrice() : int
+    + getCarInfo() : String
+}
+
+
+CarComponent ---* CarOptionDecorator
+CarComponent <|-- CarOptionDecorator
+CarComponent <|-- BasicCar
+CarOptionDecorator --|> AirBagDecorator
+CarOptionDecorator ---|> ESCDecorator
+CarOptionDecorator --|> SCCDecorator
+CarOptionDecorator ---|> NaviDecorator
+
+@enduml
