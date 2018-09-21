@@ -1,0 +1,22 @@
+@startuml
+
+class HyundaiMotor {
+    - motorStatus : MotorStatus
+    + HyundaiMotor(motor : Motor)
+    + move(direction : Direction) : void
+    - moveHyundaiMotor(direction : Direction) : void
+    + getMotorStatus() : MotorStatus
+    - setMotorStatus(motorStatus : MotorStatus) : void
+}
+
+class Door {
+    - doorStatus : DoorStatus
+    + Door()
+    + getDoorStatus() : motorStatus
+    + open() : void
+    + close() : void
+}
+
+HyundaiMotor -> Door : -door
+
+@enduml
