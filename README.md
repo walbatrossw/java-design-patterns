@@ -24,7 +24,7 @@
 
 - [ch10-decorator-patterns : 데커레이터 패턴](https://github.com/walbatrossw/java-design-patterns/blob/master/ch10-decorator-patterns/ch10-decorator-patterns.md)
 
-- [ch11-template-method-patterns : 템플릿 메서드 패턴]()
+- [ch11-template-method-patterns : 템플릿 메서드 패턴](https://github.com/walbatrossw/java-design-patterns/blob/master/ch11-template-method-patterns/ch11-template-method-patterns.md)
 
 - [ch12-factory-method-patterns : 펙토리 메서드 패턴]()
 
