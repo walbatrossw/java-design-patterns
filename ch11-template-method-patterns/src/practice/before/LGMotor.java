@@ -1,7 +1,5 @@
 package practice.before;
 
-import com.sun.javafx.scene.traversal.Direction;
-
 public class LGMotor {
 
     private Door door;
@@ -15,7 +13,7 @@ public class LGMotor {
 
     private void moveLGMotor(Direction direction) {
         // LG 모터 구동
-        System.out.println("LG 모터 구동");
+        System.out.println("LG 모터 구동 방향 : " +  direction);
     }
 
     public MotorStatus getMotorStatus() {

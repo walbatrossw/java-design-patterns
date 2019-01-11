@@ -1,7 +1,5 @@
 package practice.after1;
 
-import com.sun.javafx.scene.traversal.Direction;
-
 public class HyundaiMotor extends Motor {
 
     public HyundaiMotor(Door door) {
@@ -10,7 +8,7 @@ public class HyundaiMotor extends Motor {
 
     private void moveHyundaiMotor(Direction direction) {
         // 현대 모터 구동
-        System.out.println("현대 모터 구동");
+        System.out.println("현대 모터 구동 방향 : " + direction);
     }
 
     public void move(Direction direction) {

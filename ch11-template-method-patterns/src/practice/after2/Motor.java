@@ -1,7 +1,5 @@
 package practice.after2;
 
-import com.sun.javafx.scene.traversal.Direction;
-
 // 모터 클래스
 public abstract class Motor {
 

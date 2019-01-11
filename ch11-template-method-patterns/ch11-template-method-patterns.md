@@ -29,9 +29,11 @@
 `primitiveOperation2()`를 호출한다. 이 2개의 메서드는 `ConcreteClass`에서 오버라이드 된 것이다.
 
 
-## 2. 템플릿 메서드 패턴 예제 : 여러 회사의 모터 지원하기
+## 2. 템플릿 메서드 패턴 예제 : 엘리베이터 모터 구동 기능
 
-### 2.1
+### 2.1 여러 회사의 모토 지원하기
 
 엘리베이터 제어 시스템에서 모터를 구동시키는 기능을 생각해보자. 예를 들어 현대 모터를 이용하는
 제어 시스템이라면 `HyundaiMotor` 클래스에 `move()` 메서드를 정의할 수 있다.
+
+![template-method-pattern1](http://www.plantuml.com/plantuml/png/AyaioKbLU3kZvNLFWyBhLIlUjcnulNIFmgkjQrxtptpJFUTjqvBNNLCKF2fByr8ICttpI_AB5DusRdazRyQRhYKARrgMlDhSmiMLd9DON8ogg9fB0GXq5N91lE2In9BIOWKh1Ly43oolZQ990wmOfamJgY8tlonL8oMpA3Mv93C_3oZh0cDh0Zbb-PafSAlAKb6C8wn9Mo4zjGJ9KHgQM1ofgr2CgWYdd-1cryB2n2KVAInIyf6qkUIZXGH8G4CJuIo40h2hSZ62BhyWDKy3pJl9EVd5gHh8xa295LqxY8ki57H1Zk420000)

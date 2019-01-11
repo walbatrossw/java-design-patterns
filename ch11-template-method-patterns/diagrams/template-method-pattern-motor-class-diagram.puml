@@ -1,5 +1,7 @@
 @startuml
 
+title 현대 모터를 구동시키는 HyundaiMotor 클래스 설계
+
 class HyundaiMotor {
     - motorStatus : MotorStatus
     + HyundaiMotor(motor : Motor)

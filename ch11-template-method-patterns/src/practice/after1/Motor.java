@@ -6,6 +6,7 @@ public abstract class Motor {
     protected Door door;
     private MotorStatus motorStatus;
 
+    // 생성자
     public Motor(Door door) {
         this.door = door;
         this.motorStatus = MotorStatus.STOPPED;
