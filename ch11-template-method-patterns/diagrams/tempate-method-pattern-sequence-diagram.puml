@@ -1,0 +1,16 @@
+@startuml
+
+title Template Method Pattern Sequence Diagram
+hide footbox
+autonumber
+
+Client -> ConcreteClass : templateMethod() : void
+Activate ConcreteClass
+ConcreteClass -> ConcreteClass : primitiveOperation1() : void
+Activate ConcreteClass
+deactivate ConcreteClass
+ConcreteClass -> ConcreteClass : primitiveOperation2() : void
+Activate ConcreteClass
+deactivate ConcreteClass
+
+@enduml

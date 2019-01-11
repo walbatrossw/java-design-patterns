@@ -9,10 +9,10 @@ public class Client {
         Door door = new Door();
 
         HyundaiMotor hyundaiMotor = new HyundaiMotor(door);
-        hyundaiMotor.moveMotor(Direction.DOWN);
+        hyundaiMotor.move(Direction.DOWN);
 
         LGMotor lgMotor = new LGMotor(door);
-        lgMotor.moveMotor(Direction.UP);
+        lgMotor.move(Direction.UP);
     }
 
 }
