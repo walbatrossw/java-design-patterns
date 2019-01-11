@@ -1,4 +1,4 @@
-package practice.before;
+package practice.after2;
 
 // 문 클래스
 public class Door {

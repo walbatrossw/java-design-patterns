@@ -2,21 +2,20 @@ package practice.before;
 
 import com.sun.javafx.scene.traversal.Direction;
 
-// 현대 모터 클래스
-public class HyundaiMotor {
+public class LGMotor {
 
     private Door door;
     private MotorStatus motorStatus;
 
     // 생성자
-    public HyundaiMotor(Door door) {
+    public LGMotor(Door door) {
         this.door = door;
         this.motorStatus = MotorStatus.STOPPED;
     }
 
-    private void moveHyundaiMotor(Direction direction) {
-        // 현대 모터 구동
-        System.out.println("현대 모터 구동");
+    private void moveLGMotor(Direction direction) {
+        // LG 모터 구동
+        System.out.println("LG 모터 구동");
     }
 
     public MotorStatus getMotorStatus() {
@@ -32,7 +31,7 @@ public class HyundaiMotor {
 
         MotorStatus motorStatus = getMotorStatus();
 
-        // 이동중이면 작업 메서드 종료
+        // 이동중이면 메서드 종료
         if (motorStatus == MotorStatus.MOVING) {
             return;
         }
@@ -44,7 +43,8 @@ public class HyundaiMotor {
             door.close();
         }
 
-        moveHyundaiMotor(direction); // 모터를 주어진 방향으로 작동
+        moveLGMotor(direction); // 모터를 주어진 방향으로 작동
         setMotorStatus(MotorStatus.MOVING); // 모터 상태를 이동중으로 변경
+
     }
 }
