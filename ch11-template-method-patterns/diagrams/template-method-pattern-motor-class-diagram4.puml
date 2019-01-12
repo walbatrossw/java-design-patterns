@@ -1,0 +1,37 @@
+@startuml
+
+title move메서드의 중복코드를 최소화한 설계
+
+abstract class Motor {
+    - motorStatus : MotorStatus
+    + Motor(door : Door)
+    + getMotorStatus() : MotorStatus
+    - setMotorStatus(motorStatus : MotorStatus) : void
+    + move(direction : Direction) : void
+    # moveMotor(direction : Direction) : void
+}
+
+class Door {
+    - doorStatus : DoorStatus
+    + Door()
+    + getDoorStatus() : motorStatus
+    + open() : void
+    + close() : void
+}
+
+class HyundaiMotor {
+    + HyundaiMotor(motor : Motor)
+    - moveMotor(direction : Direction) : void
+}
+
+class LGMotor {
+    + LGMotor(motor : Motor)
+    - moveMotor(direction : Direction) : void
+}
+
+
+Motor -> Door : door
+Motor <|-- HyundaiMotor
+Motor <|-- LGMotor
+
+@enduml
