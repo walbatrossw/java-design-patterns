@@ -23,17 +23,19 @@
 
 ![template-method-pattern-sequence-diagram](http://www.plantuml.com/plantuml/png/hOsn2i9040Nx-uejjR3GqaAGs8g2_i0czpGBTxVniXVyV2FQ10H1R0TcniG2w8pO1JRG7jQgfoER8ISwuLQG6j1E-9evkbOywA9gjTuT5zDKOetiN1K4oMYneKfJas6e0lSzhSdUxLTwDX_HeEBTjZ4Pdi-9uARwXrwN9Sgeuj0XiuccvTUe1__jjlhzzW00)
 
-`Client`는 `ConcreteClass`객체의 `templateMethod()`를 호출한다. 실제로 `templateMethod()`는
+Client`는 `ConcreteClass`객체의 `templateMethod()`를 호출한다. 실제로 `templateMethod()`는
 `AbstractClass`에서 정의되었지만 `ConcreteClass`는 `AbstractClass`의 하위 클래스이기 때문에
 `Client`가 호출할 수 있다. `AbstractClass :: templateMethod()` 에서는 `primitiveOperation1()`과
 `primitiveOperation2()`를 호출한다. 이 2개의 메서드는 `ConcreteClass`에서 오버라이드 된 것이다.
 
-
 ## 2. 템플릿 메서드 패턴 예제 : 엘리베이터 모터 구동 기능
 
-### 2.1 여러 회사의 모토 지원하기
+### 2.1 여러 회사의 모터 지원하기
 
-엘리베이터 제어 시스템에서 모터를 구동시키는 기능을 생각해보자. 예를 들어 현대 모터를 이용하는
-제어 시스템이라면 `HyundaiMotor` 클래스에 `move()` 메서드를 정의할 수 있다.
+![template-method-pattern-class](http://www.plantuml.com/plantuml/png/AyaioKbLU3kZvNLFWyBhLIlUjcnulNIFmgkjQrxtptpJFUTjqvBNNLCKF2fByr8ICttpI_AB5DusRdazRyQRhYKARrgMlDhSmiMLd9DON8ogg9fB0GXq5N91lE2In9BIOWKh1Ly43oolZQ990wmOfamJgY8tlonL8oMpA3Mv93C_3oZh0cDh0Zbb-PafSAlAKb6C8wn9Mo4zjGJ9KHgQM1ofgr2CgWYdd-1cryB2n2KVAInIyf6qkUIZXGH8G4CJuIo40h2hSZ62BhyWDKy3pJl9EVd5gHh8xa295LqxY8ki57H1Zk420000)
 
-![template-method-pattern1](http://www.plantuml.com/plantuml/png/AyaioKbLU3kZvNLFWyBhLIlUjcnulNIFmgkjQrxtptpJFUTjqvBNNLCKF2fByr8ICttpI_AB5DusRdazRyQRhYKARrgMlDhSmiMLd9DON8ogg9fB0GXq5N91lE2In9BIOWKh1Ly43oolZQ990wmOfamJgY8tlonL8oMpA3Mv93C_3oZh0cDh0Zbb-PafSAlAKb6C8wn9Mo4zjGJ9KHgQM1ofgr2CgWYdd-1cryB2n2KVAInIyf6qkUIZXGH8G4CJuIo40h2hSZ62BhyWDKy3pJl9EVd5gHh8xa295LqxY8ki57H1Zk420000)
+![template-method-pattern-enum-class](http://www.plantuml.com/plantuml/png/AyaioKbLICqhpKqjIYp9pCzJU3DtnzkM3M_xPhoPk-LDrn8kBf2aWcz-INvHS4bYIMcnWeqDYWOxEuLgBWKWq5RmzG_pz7E7Se93_0C2N5suQg56kEGJOO9_WAiVK0-4u-pZ7uniG6PHQZ9O0sxzeG5GXej_k1zG9m00)
+
+엘리베이터 제어 시스템에서 현대 모터를 이용하여 구동시키는 기능을 구현한다면 위와 같이 클래스를 설계할 수 있다.
+
+![template-method-pattern-move-method](http://www.plantuml.com/plantuml/png/dP6nJiCm54LtVyKRqu4Vg1GaX2jWI8k4nExK3x18yr3o4i5Mf4vq1AGEeHC3x9NWcuZx3rX5XPY2IfbilskTUttDXXE4_QiYrSf4n9J1_7fMJoVsvj4-J6109KBzV6T7LNrRWHrNy-7GQL2FdJwpzwEtbzTw-YJEZ4Ou8UAOBeKgcD9Y46Ccn6vYC6NOslPTsWjq84s6VJQKWbxkMauhoMWXTjovLEpd4nxc9wnRZrXnaKCxX5Faw6iIj7w1QbGRpKMSeJhtpC8GejxnGNTl9Q6aHJ9Dtu99QkJ2rBsOBhXvpI5xXvrkH_uDsKyenoLgRKqbDaV1P_zEb2j_iLbhwynp_rC-Qlkdrpi0)

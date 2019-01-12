@@ -1,0 +1,31 @@
+@startuml
+
+title HyundaiMotor 클래스의 move 메서드 시퀀스 다이아그램
+hide footbox
+autonumber
+
+Client -> HyundaiMotor : move(Direction direction) : void
+
+Activate HyundaiMotor
+HyundaiMotor -> HyundaiMotor : motorStatus := getMotorStatus()
+Activate HyundaiMotor
+deactivate HyundaiMotor
+deactivate HyundaiMotor
+
+break motorStatus == MOVING
+HyundaiMotor -> Door : doorStatus := getDoorStatus()
+end
+
+opt doorStatus == OPENED
+HyundaiMotor -> Door : doorStatus := close()
+end
+
+HyundaiMotor -> HyundaiMotor : moveHyundaiMotor(direction : Direction) : void
+Activate HyundaiMotor
+deactivate HyundaiMotor
+
+HyundaiMotor -> HyundaiMotor : setMotorStatus(MOVING) : void
+Activate HyundaiMotor
+deactivate HyundaiMotor
+
+@enduml

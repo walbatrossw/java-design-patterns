@@ -1,0 +1,20 @@
+@startuml
+
+title enumeration 인터페이스
+
+enum MotorStatus << enumeration >> {
+    + MOVING
+    + STOPPED
+}
+
+enum DoorStatus << enumeration >> {
+    + OPENED
+    + CLOSED
+}
+
+enum Direction << enumeration >> {
+    + UP
+    + DOWN
+}
+
+@enduml
