@@ -377,6 +377,129 @@ LG 모터 구동 방향 UP
 ```
 
 `Motor`클래스를 `HyundaiMotor`, `LGMotor`클래스의 상위 클래스로 정의함으로써 이전의 코드
-중복을 피할 수 있었다. 하지만 여전히 `move()`메서드는 코드 중복 문제가 있다.
+중복을 피할 수 있었다. 하지만 `move()`메서드는 여전히 부분적으로 코드 중복 문제가 있는데 탬플릿
+메서드 패턴을 통해 해결해보자.
 
 ## 2.3 해결책 : 템플릿 메서드 패턴 적용
+
+위에서 살펴본 `move()`메서드의 부분적인 중복문제는 상속을 활용하여 해결할 수 있다. `moveHyundaiMotor()`와
+`moveLGMotor()` 메서드를 호출하는 부분을 제외하면 두 클래스의 메서드는 동일하다. 그리고 실제로 모터를 구동한다는
+기능면에서 동일하다.
+
+이러한 경우 `move()`메서드를 상위 `Motor`클래스로 이동시키고 `moveHyundaiMotor()`와 `moveLGMotor()`메서드의
+호출 부분을 하위 클래스에서 오버라이드하는 방식으로 처리하면 `move()`메서드의 중복을 최소화 할 수 있다.
+
+![template-method-pattern4](http://www.plantuml.com/plantuml/png/AyaioKbLoCqlItszSigRbZcl9yzvCtU6mfib4rzltlfcxnGW__NIFGfljivvqzRpTkQKjrFdABnfMV9gSmiNLs9ISKbHOdA9Gd9EOd6nWcz-INwHGZMN0X3e0eq4ye9B4ajAYnMi878G7bXU6oAYaP8Fr6Abu0AaDA4IwQabIAerDB7erbKeHbM4qpAGxhByp1IesI1_QgHa5gKcbsJcvu4iXh5H52g35K9TY5TrBHSNnFCW7y3z3l8Lt3Kk-MW-1mbe8FaMeG3isLoCeCelICtJGFD9Sav-SQe6fZiyAalpKX8paUD26qKG4bQmKDA4nnQ9_lLnHxK2ogVOT2w8iRfsa12r0eSbLD2cHbSNnI_8ub07S040)
+
+위의 설계에서 볼 수 있듯이 두 클래스의 `move()`메서드에서 다른 부분은 `moveMotor()`메서드로 대체하였다.
+`moveMotor()`메서드의 구현이 `HyundaiMotor`클래스와 `LGMotor`클래스에 따라 달라야 하므로 `moveMotor()`
+메서드는 `Motor`클래스에서 추상메서드로 정의한 후 각 하위 클래스에서 오버라이드되도록 한다.
+
+아래는 위의 설계에 따라 코드의 중복을 최소한으로 줄여 작성된 내용이다.
+
+```java
+// 모터 클래스
+public abstract class Motor {
+
+    private Door door;                  // 문
+    private MotorStatus motorStatus;    // 모터 상태 변수
+
+    // 생성자
+    public Motor(Door door) {
+        this.door = door;
+        this.motorStatus = MotorStatus.STOPPED;
+    }
+
+    public MotorStatus getMotorStatus() {
+        return motorStatus;
+    }
+
+    public void setMotorStatus(MotorStatus motorStatus) {
+        this.motorStatus = motorStatus;
+    }
+    
+    // 모터 구동 메서드
+    public void move(Direction direction) {
+
+        MotorStatus motorStatus = getMotorStatus();
+
+        if (motorStatus == MotorStatus.MOVING) {
+            return;
+        }
+
+        DoorStatus doorStatus = door.getDoorStatus();
+
+        if (doorStatus == DoorStatus.OPENED) {
+            door.close();
+        }
+
+        moveMotor(direction);
+        setMotorStatus(MotorStatus.MOVING);
+
+    }
+    
+    // 각각의 회사 모터에 따라 오버라이드 할 추상 메서드
+    protected abstract void moveMotor(Direction direction);
+}
+```
+
+```java
+// 현대 모터 클래스 : 모터 클래스 상속
+public class HyundaiMotor extends Motor {
+
+    public HyundaiMotor(Door door) {
+        super(door);
+    }
+    
+    // 현대 모터에 맞게 구동 메서드 오버라이드
+    @Override
+    protected void moveMotor(Direction direction) {
+        // 현대 모터 구동
+        System.out.println("현대 모터 구동 방향 : " + direction);
+    }
+}
+```
+
+```java
+// LG 모터 클래스 : 모터 클래스 상속
+public class LGMotor extends Motor {
+
+    public LGMotor(Door door) {
+        super(door);
+    }
+
+    // LG 모터에 맞게 구동 메서드 오버라이드
+    @Override
+    protected void moveMotor(Direction direction) {
+        // LG 모터 구동
+        System.out.println("LG 모터 구동 방향 : " + direction);
+    }
+}
+```
+
+```java
+// 클라이언트
+public class Client {
+
+    public static void main(String[] args) {
+
+        Door door = new Door();
+
+        HyundaiMotor hyundaiMotor = new HyundaiMotor(door);
+        hyundaiMotor.move(Direction.DOWN);
+
+        LGMotor lgMotor = new LGMotor(door);
+        lgMotor.move(Direction.UP);
+
+    }
+
+}
+```
+
+```
+현대 모터 구동 방향 : DOWN
+LG 모터 구동 방향 UP
+```
+
+이전의 코드에 비해 중복된 코드가 줄었고, 훨씬 더 간결해진 것을 알 수 있다.
+

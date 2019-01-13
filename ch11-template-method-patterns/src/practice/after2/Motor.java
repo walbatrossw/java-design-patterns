@@ -3,8 +3,8 @@ package practice.after2;
 // 모터 클래스
 public abstract class Motor {
 
-    private Door door;
-    private MotorStatus motorStatus;
+    private Door door;                  // 문
+    private MotorStatus motorStatus;    // 모터 상태 변수
 
     // 생성자
     public Motor(Door door) {
@@ -20,6 +20,7 @@ public abstract class Motor {
         this.motorStatus = motorStatus;
     }
 
+    // 모터 구동 메서드
     public void move(Direction direction) {
 
         MotorStatus motorStatus = getMotorStatus();
@@ -39,5 +40,6 @@ public abstract class Motor {
 
     }
 
+    // 각각의 회사 모터에 따라 오버라이드 할 추상 메서드
     protected abstract void moveMotor(Direction direction);
 }
