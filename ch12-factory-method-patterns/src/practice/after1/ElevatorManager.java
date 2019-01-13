@@ -1,6 +1,7 @@
-package practice.before;
+package practice.after1;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ElevatorManager {
@@ -23,10 +24,21 @@ public class ElevatorManager {
 
     // 엘리베이터 요청
     void requestElevator(int destination, Direction direction) {
-        // 엘리베이터 선택
-        int selectedElevator = scheduler.selectElevator(this, destination, direction);
-        // 선택된 엘리베이터 이동
-        controllers.get(selectedElevator).gotoFloor(destination);
+        ElevatorScheduler scheduler;
+
+        // 0 ~ 23
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+
+        // 오전 : ResponseTimeScheduler 사용
+        if (hour <  12) {
+            scheduler = new ResponseTimeScheduler();
+        } else {    // 오후 : ThroughputScheduler 사용
+            scheduler = new ThroughputScheduler();
+        }
+
+        int selectElevator = scheduler.selectElevator(this, destination, direction);
+        controllers.get(selectElevator).gotoFloor(destination);
+
     }
 
 }
