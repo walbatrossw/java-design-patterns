@@ -11,6 +11,7 @@ public class Client {
 
         LGMotor lgMotor = new LGMotor(door);
         lgMotor.move(Direction.UP);
+
     }
 
 }

@@ -3,8 +3,8 @@ package practice.before;
 // 현대 모터 클래스
 public class HyundaiMotor {
 
-    private Door door;
-    private MotorStatus motorStatus;
+    private Door door;                  // 문
+    private MotorStatus motorStatus;    // 모터 상태 변수
 
     // 생성자
     public HyundaiMotor(Door door) {
@@ -12,6 +12,7 @@ public class HyundaiMotor {
         this.motorStatus = MotorStatus.STOPPED;
     }
 
+    // 현대 모터 구동
     private void moveHyundaiMotor(Direction direction) {
         // 현대 모터 구동
         System.out.println("현대 모터 구동 방향 : " + direction);
@@ -30,7 +31,7 @@ public class HyundaiMotor {
 
         MotorStatus motorStatus = getMotorStatus();
 
-        // 이동중이면 작업 메서드 종료
+        // 모터가 구동 중이면 메서드 종료
         if (motorStatus == MotorStatus.MOVING) {
             return;
         }
@@ -42,7 +43,8 @@ public class HyundaiMotor {
             door.close();
         }
 
-        moveHyundaiMotor(direction); // 모터를 주어진 방향으로 작동
+        moveHyundaiMotor(direction);        // 모터를 주어진 방향으로 작동
         setMotorStatus(MotorStatus.MOVING); // 모터 상태를 이동중으로 변경
     }
+
 }

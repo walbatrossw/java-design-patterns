@@ -1,6 +1,6 @@
 package practice.after1;
 
-
+// 클라이언트
 public class Client {
     public static void main(String[] args) {
 

@@ -1,9 +1,10 @@
 package practice.before;
 
+// LG 모터 클래스
 public class LGMotor {
 
-    private Door door;
-    private MotorStatus motorStatus;
+    private Door door;                  // 문
+    private MotorStatus motorStatus;    // 모터 상태 변수
 
     // 생성자
     public LGMotor(Door door) {
@@ -11,6 +12,7 @@ public class LGMotor {
         this.motorStatus = MotorStatus.STOPPED;
     }
 
+    // LG 모터 구동
     private void moveLGMotor(Direction direction) {
         // LG 모터 구동
         System.out.println("LG 모터 구동 방향 : " +  direction);
@@ -29,7 +31,7 @@ public class LGMotor {
 
         MotorStatus motorStatus = getMotorStatus();
 
-        // 이동중이면 메서드 종료
+        // 모터가 구동 중이면 메서드 종료
         if (motorStatus == MotorStatus.MOVING) {
             return;
         }
@@ -41,7 +43,7 @@ public class LGMotor {
             door.close();
         }
 
-        moveLGMotor(direction); // 모터를 주어진 방향으로 작동
+        moveLGMotor(direction);             // 모터를 주어진 방향으로 작동
         setMotorStatus(MotorStatus.MOVING); // 모터 상태를 이동중으로 변경
 
     }

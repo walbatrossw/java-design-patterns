@@ -13,11 +13,16 @@ deactivate HyundaiMotor
 deactivate HyundaiMotor
 
 break motorStatus == MOVING
-HyundaiMotor -> Door : doorStatus := getDoorStatus()
 end
 
+HyundaiMotor -> Door : doorStatus := getDoorStatus()
+Activate Door
+deactivate Door
+
 opt doorStatus == OPENED
-HyundaiMotor -> Door : doorStatus := close()
+HyundaiMotor -> Door : close() : void
+Activate Door
+deactivate Door
 end
 
 HyundaiMotor -> HyundaiMotor : moveHyundaiMotor(direction : Direction) : void
