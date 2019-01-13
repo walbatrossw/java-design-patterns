@@ -501,5 +501,12 @@ public class Client {
 LG 모터 구동 방향 UP
 ```
 
-이전의 코드에 비해 중복된 코드가 줄었고, 훨씬 더 간결해진 것을 알 수 있다.
+이전의 코드에 비해 중복된 코드가 줄었고, 훨씬 더 간결해진 것을 알 수 있다. 최종적으로 위 예제를
+템플릿 메서드 패턴을 적용해 각각의 역할을 정리해보면 아래와 같다.
+
+![template-method-pattern-motor-class-diagram5](http://www.plantuml.com/plantuml/png/AyaioKbLUDiwv-sKdjVBzYkyNZdbJSkSrvFdABpjMV6sPSkRkIqAhrS1MHiKtipeUBDWpflf4nJUB6XyCslbswbp55vjsljcrWOkhiIaufAYnEGIXUISnE9Y1T_yalmYXMek1I3GLSW5yO9B4ajAYnMi878G7bXU6oAYaP8Fr6Abu0AaDA4IwQabIAerDB7erbKeHbM4qpAGxhByp1IesRdvPQaQAPb5gSabcVbv88jXR1I5oc25K1VYLLtBnGNnl4TbQLvAOYPo66YZ24BS27ET9ZoKIBJ7nntL2YYVOjCXfjhKwEgYk1fP76eL5m00)
+
+- `Motor`클래스는 AbstractClass역할을 수행
+- `HyundaiMotor`클래스와 `LGMotor`클래스는 각각 ConcreteClass역할을 수행
+- `Motor`클래스의 `move()`메서드는 템플릿 메서드, `moveMotor()`메서드는 primitive메서드에 해당
 
