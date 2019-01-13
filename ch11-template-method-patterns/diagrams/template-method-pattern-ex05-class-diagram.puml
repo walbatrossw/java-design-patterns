@@ -1,0 +1,31 @@
+@startuml
+
+title class diagram
+
+abstract class ReportGenerator {
+    + generator(customers : List<Customer>) : String
+    # select(customers : List<Customer>) : List<Customer>
+    # customerReportCondition(customer : Customer) : Boolean
+    # getReportHeader(customers : List<Customer>) : String
+    # customerReportForCustomer(customer : Customer) : String
+    # getReportFooter(customers : List<Customer>) : String
+}
+
+class SimpleReportGenerator {
+    # customerReportCondition(customer : Customer) : Boolean
+    # getReportHeader(customers : List<Customer>) : String
+    # customerReportForCustomer(customer : Customer) : String
+    # getReportFooter(customers : List<Customer>) : String
+}
+
+class ComplexReportGenerator {
+    # customerReportCondition(customer : Customer) : Boolean
+    # getReportHeader(customers : List<Customer>) : String
+    # customerReportForCustomer(customer : Customer) : String
+    # getReportFooter(customers : List<Customer>) : String
+}
+
+ReportGenerator <|-- SimpleReportGenerator
+ReportGenerator <|-- ComplexReportGenerator
+
+@enduml
