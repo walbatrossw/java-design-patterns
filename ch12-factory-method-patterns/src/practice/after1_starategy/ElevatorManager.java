@@ -1,4 +1,4 @@
-package practice.after1;
+package practice.after1_starategy;
 
 import java.util.ArrayList;
 import java.util.Calendar;

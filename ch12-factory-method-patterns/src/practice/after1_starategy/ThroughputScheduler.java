@@ -1,4 +1,4 @@
-package practice.after1;
+package practice.after1_starategy;
 
 public class ThroughputScheduler implements ElevatorScheduler {
 

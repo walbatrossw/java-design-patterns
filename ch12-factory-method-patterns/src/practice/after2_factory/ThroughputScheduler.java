@@ -1,9 +1,9 @@
-package practice.after1;
+package practice.after2_factory;
 
-public class ResponseTimeScheduler implements ElevatorScheduler {
+public class ThroughputScheduler implements ElevatorScheduler {
 
     @Override
     public int selectElevator(ElevatorManager elevatorManager, int destination, Direction direction) {
-        return 1;
+        return 0;
     }
 }

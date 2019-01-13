@@ -1,4 +1,4 @@
-package practice.after1;
+package practice.after2_factory;
 
 // 엘리베이터 스케쥴 인터페이스
 public interface ElevatorScheduler {
