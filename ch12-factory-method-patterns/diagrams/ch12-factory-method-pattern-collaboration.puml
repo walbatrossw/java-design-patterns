@@ -1,0 +1,10 @@
+@startuml
+
+title Factory method Pattern collaboration
+
+class  {
+
+}
+
+
+@enduml
